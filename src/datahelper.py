@@ -18,8 +18,8 @@ from enum import Enum
 import matplotlib.figure as fg
 import matplotlib.pyplot as plt
 import numpy as np
-from datacolor import DataColor
-from dataset import DataGenerator
+from .datacolor import DataColor
+from .dataset import DataGenerator
 
 
 class DatasetType(Enum):
@@ -40,6 +40,8 @@ class DataHelper:
         if len_data == 0:
             raise ValueError("No array error.")
 
+        mat = np.array(data)
+
         # It is easy to use scikit-learn.
         # X = mat[:,:-1] # data
         # y = mat[:,-1]  # label
@@ -47,10 +49,10 @@ class DataHelper:
         # X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=test_size)
 
         # But, because this class doesn't use scikit-learn.
-        np.random.shuffle(data)
-        X = data[:, :-1]  # data
-        y = data[:, -1]   # label
-        split_point = int(len(data) * (1.0 - test_size))
+        np.random.shuffle(mat)
+        X = mat[:, :-1]  # data
+        y = mat[:, -1]   # label
+        split_point = int(len(mat) * (1.0 - test_size))
         X_train = X[0:split_point, :] # train data
         y_train = y[0:split_point]    # train label
         X_test = X[split_point:, :]   # test data

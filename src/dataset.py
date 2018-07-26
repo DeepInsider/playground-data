@@ -18,7 +18,7 @@
 
 import random
 import math
-from scalelinear import ScaleLinear
+from .scalelinear import ScaleLinear
 
 #class Example2D:
 #    """
