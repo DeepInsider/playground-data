@@ -5,7 +5,7 @@ This project that exists as an aid to the [Nerural Network Playground - Deep Ins
 
 [The python module "playground-data" on PyPI for this project is available here][pypi].
 
-## Install the moudle using `pip`
+## Install the module using `pip`
 
 ```bash
 pip install playground-data
