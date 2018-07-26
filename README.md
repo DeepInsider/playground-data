@@ -3,7 +3,7 @@ Data Generation for Neural Network Playground of Deep Insider.
 
 This project that exists as an aid to the [Nerural Network Playground - Deep Insider][playground page] which was forked from [tensorflow/playground: Deep playground][original page].
 
-[The source for this project is available here][src].
+<!--[The source for this project is available here][src].-->
 
 ## License
 
@@ -19,7 +19,7 @@ Copyright 2016 Google Inc. All Rights Reserved.
 Licensed under the Apache License, Version 2.0 (the "License").
 
  [d3/d3-scale/linear.js][scalelinear.py origin]  
-Copyright 2010-2015 Mike Bostock. All rights reserved.
+Copyright 2010-2015 Mike Bostock. All rights reserved.  
 Licensed under the BSD 3-Clause "New" or "Revised" License.
 
 [playground page]: https://re.deepinsider.jp/playground/index.html
