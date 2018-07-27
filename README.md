@@ -60,6 +60,11 @@ test_data_ratio = 0.5
 
 # Generate data
 data_array = pg.DataGenerator.classify_two_gauss(noise=data_noise)
+#data_array = pg.DataGenerator.classify_circle(noise=data_noise)
+#data_array = pg.DataGenerator.classify_spiral(noise=data_noise)
+#data_array = pg.DataGenerator.classify_xor(noise=data_noise)
+#data_array = pg.DataGenerator.regress_gaussian(noise=data_noise)
+#data_array = pg.DataGenerator.regress_plane(noise=data_noise)
 
 # Divide the data for training and testing at a specified ratio (further, separate each data into Coordinate point data part and teacher label part)
 X_train, y_train, X_test, y_test = pg.DataHelper.split_train_test_x_data_label(data_array, test_size=test_data_ratio)
