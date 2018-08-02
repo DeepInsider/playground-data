@@ -109,3 +109,4 @@ venv.bak/
 .idea
 /JupyterSample
 /PyPI.DeepInsider
+/.vscode
