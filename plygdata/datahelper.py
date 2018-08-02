@@ -78,6 +78,7 @@ class DataHelper:
         ax.set_yticks([-6, -5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5, 6])
         ax.get_xticklabels()[6].set_color("dimgray")
         ax.get_yticklabels()[6].set_color("dimgray")
+        ax.grid(color='white', linestyle='-') # b=None if turing off
         return ax
 
 
