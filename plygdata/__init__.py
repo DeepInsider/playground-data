@@ -1,7 +1,7 @@
 
-""" This folder is processed as 'playground-data package'. Initialization modules for this package. """
+""" This folder is processed as 'plygdata package'. Initialization modules for this package. """
 
-from . import _version
+from .. import _version
 __version__ = _version.__version__
 
 # For importing main classes
