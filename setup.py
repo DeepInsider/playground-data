@@ -22,7 +22,7 @@ with open(path.join(here, 'README.md'), encoding='utf-8') as f:
     long_description = f.read()
 
 # Get the version from the _version.py file
-with open(path.join(here, '_version.py'), encoding='utf-8') as f:
+with open(path.join(here, 'plygdata', '_version.py'), encoding='utf-8') as f:
     exec(f.read())
 
 # Arguments marked as "Required" below must be included for upload to PyPI.
