@@ -34,7 +34,7 @@ class DatasetType(Enum):
 class DataHelper:
 
     @staticmethod
-    def split_train_test_x_data_label(data: list, test_size: float = 0.5) -> (list, list, list, list):
+    def split_train_test_x_data_label(data: list, test_size: float = 0.5, label_num: int = 1) -> (list, list, list, list):
 
         len_data = len(data)
         if len_data == 0:
@@ -43,15 +43,17 @@ class DataHelper:
         mat = np.array(data)
 
         # It is easy to use scikit-learn.
-        # X = mat[:,:-1] # data
-        # y = mat[:,-1]  # label
+        # X = mat[:,:-(label_num)] # data
+        # y = mat[:,-(label_num)]  # label
         # from sklearn.model_selection import train_test_split
         # X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=test_size)
 
         # But, because this class doesn't use scikit-learn.
         np.random.shuffle(mat)
-        X = mat[:, :-1]  # data
-        y = mat[:, -1]   # label
+
+        X = mat[:, :-(label_num)]  # data
+        y = mat[:, -(label_num)]   # label
+
         split_point = int(len(mat) * (1.0 - test_size))
         X_train = X[0:split_point, :] # train data
         y_train = y[0:split_point]    # train label
