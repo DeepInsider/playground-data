@@ -60,6 +60,20 @@ class DataHelper:
         X_test = X[split_point:, :]   # test data
         y_test = y[split_point:]      # test label
 
+        if label_num == 1:
+            y_train = np.reshape(y_train, [len(y_train), 1])
+            y_test = np.reshape(y_train, [len(y_test), 1])
+
+        # To Pandas example:
+        # import numpy as np
+        # import pandas as pd
+        # df_X_train = pd.DataFrame(X_train)
+        # df_X_train.columns = ['x1', 'x2']
+        # print(df_X_train)
+        # df_y_train = pd.DataFrame(y_train)
+        # df_y_train.columns = ['label']
+        # print(df_y_train)
+
         return X_train, y_train, X_test, y_test
 
 
