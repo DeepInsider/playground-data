@@ -14,7 +14,9 @@
 # limitations under the License.
 # ==============================================================================
 
-from enum import Enum
+from __future__ import division #, print_function
+
+#from enum import Enum # for python 3 syntax
 import matplotlib.figure as fg
 import matplotlib.pyplot as plt
 import numpy as np
@@ -22,7 +24,7 @@ from .datacolor import DataColor
 from .dataset import DataGenerator
 
 
-class DatasetType(Enum):
+class DatasetType: # (Enum): # for python 3 syntax
     ClassifyCircleData = "circle"
     ClassifyXORData = "xor"
     ClassifyTwoGaussData = "gauss"
@@ -34,7 +36,7 @@ class DatasetType(Enum):
 class DataHelper:
 
     @staticmethod
-    def split_train_test_x_data_label(data: list, test_size: float = 0.5, label_num: int = 1) -> (list, list, list, list):
+    def split_train_test_x_data_label(data, test_size = 0.5, label_num = 1): #  -> (list, list, list, list)
 
         len_data = len(data)
         if len_data == 0:
@@ -78,7 +80,7 @@ class DataHelper:
 
 
     @staticmethod
-    def get_playground_axes(fig: fg.Figure):
+    def get_playground_axes(fig): # : fg.Figure
         ax = fig.add_subplot(111)  # Row: 1, Column: 1, Place: 1
         ax.set_facecolor("#e8eaeb")
         ax.spines['top'].set_visible(False)
@@ -99,7 +101,7 @@ class DataHelper:
 
 
     @staticmethod
-    def plot_with_playground_style(X_train: list, y_train: list, X_test: list = None, y_test: list = None, figsize: tuple = (5, 5), dpi: int = 100):
+    def plot_with_playground_style(X_train, y_train, X_test = None, y_test = None, figsize = (5, 5), dpi = 100):
         """
         if width 5 inches x height 5 inches x dpi 100, = 500 x 500 dots figure will be created.
 
@@ -129,7 +131,7 @@ class DataHelper:
 
 
     @staticmethod
-    def plot_sample(data_type: str, visualize_test_data: bool = False, noise: float = 0.0, test_size: float = 0.5, figsize: tuple = (5, 5), dpi: int = 100) -> None:
+    def plot_sample(data_type, visualize_test_data = False, noise = 0.0, test_size = 0.5, figsize = (5, 5), dpi = 100):
 
         if data_type == DatasetType.ClassifyTwoGaussData:
             data_array = DataGenerator.classify_two_gauss(noise=noise)

@@ -16,8 +16,9 @@
 # limitations under the License.
 # ==============================================================================
 
+from __future__ import division
 
-def deinterpolate_linear(a: float, b: float):
+def deinterpolate_linear(a, b):
     b = b - a
     if b == 0:
         return lambda x: b
@@ -25,10 +26,10 @@ def deinterpolate_linear(a: float, b: float):
         return lambda x: (x - a) / b
 
 
-def deinterpolate_clamp(a: float, b: float):
+def deinterpolate_clamp(a, b):
     d = deinterpolate_linear(a, b)
 
-    def _deinterpolate(x: float):
+    def _deinterpolate(x):
         if x <= a:
             return 0.0
         else:
@@ -40,12 +41,12 @@ def deinterpolate_clamp(a: float, b: float):
     return _deinterpolate
 
 
-def interpolate_number(a: float, b: float):
+def interpolate_number(a, b):
     b = b - a
     return lambda t: a + b * t
 
 
-def bimap(values, domain: list, slrange: list, clamp: bool):
+def bimap(values, domain, slrange, clamp):
     d0 = domain[0]
     d1 = domain[1]
     r0 = slrange[0]

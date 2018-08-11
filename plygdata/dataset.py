@@ -16,6 +16,8 @@
 # limitations under the License.
 # ==============================================================================
 
+from __future__ import division
+
 import random
 import math
 from .scalelinear import ScaleLinear
@@ -30,26 +32,26 @@ from .scalelinear import ScaleLinear
 #        self.label = label
 
 class Point:
-    def __init__(self, x: float = 0.0, y: float = 0.0):
+    def __init__(self, x = 0.0, y = 0.0):
         self.x = x
         self.y = y
 
 
-def rand_uniform(a: float, b: float) -> float:
+def rand_uniform(a, b):
     """
     Returns a sample from a uniform [a, b] distribution.
     """
     return random.random() * (b - a) + a
 
 
-def normal_random(mean: float = 0.0, variance: float = 1.0) -> float:
+def normal_random(mean = 0.0, variance = 1.0):
     """
         Samples from a normal distribution.
 
-        :param mean: int
-            The mean. Default is 0.
-        :param variance: int
-            The variance. Default is 1.
+        :param mean
+            The mean. Default is 0.0.
+        :param variance
+            The variance. Default is 1.0.
     """
     while True:
         v1 = 2.0 * random.random() - 1.0
@@ -61,16 +63,16 @@ def normal_random(mean: float = 0.0, variance: float = 1.0) -> float:
     return mean + math.sqrt(variance) * result
 
 
-def dist(a: Point, b: Point) -> float:
+def dist(a, b):
     """
     Returns the euclidean distance between two points in space.
     """
-    dx: float = a.x - b.x
-    dy: float = a.y - b.y
+    dx = a.x - b.x
+    dy = a.y - b.y
     return math.sqrt(dx * dx + dy * dy)
 
 
-def shuffle(array: list) -> None:
+def shuffle(array):
     """
     Shuffles the array using Fisher-Yates algorithm. Uses the seedrandom
     library as the random generator.
@@ -93,13 +95,13 @@ def shuffle(array: list) -> None:
 class DataGenerator:
 
     @staticmethod
-    def classify_two_gauss(noise: float = 0.0, numSamples: int = 500) -> list:
+    def classify_two_gauss(noise = 0.0, numSamples = 500):
         points = []
 
         varianceScale = ScaleLinear(domain=[0.0, 0.5], slrange=[0.5, 4.0])
         variance = varianceScale(noise)
 
-        def genGauss(cx: float, cy: float, label: int):
+        def genGauss(cx, cy, label):
             for _ in range(numSamples // 2):
                 x = normal_random(cx, variance)
                 y = normal_random(cy, variance)
@@ -111,9 +113,9 @@ class DataGenerator:
 
 
     @staticmethod
-    def classify_xor(noise: float = 0.0, numSamples: int = 500) -> list:
+    def classify_xor(noise = 0.0, numSamples = 500):
 
-        def getXORLabel(p: Point) -> int:
+        def getXORLabel(p):
             return 1 if (p.x * p.y >= 0) else -1
 
         points = []
@@ -131,11 +133,11 @@ class DataGenerator:
 
 
     @staticmethod
-    def classify_circle(noise: float = 0.0, numSamples: int = 500) -> list:
+    def classify_circle(noise = 0.0, numSamples = 500):
         points = []
         radius = 5.0
 
-        def getCircleLabel(p: Point, center: Point):
+        def getCircleLabel(p, center):
             return 1 if (dist(p, center) < (radius * 0.5)) else -1
 
         # Generate positive points inside the circle.
@@ -164,11 +166,11 @@ class DataGenerator:
 
 
     @staticmethod
-    def classify_spiral(noise: float = 0.0, numSamples: int = 500) -> list:
+    def classify_spiral(noise = 0.0, numSamples = 500):
         points = []
         n = numSamples // 2
 
-        def genSpiral(deltaT: float, label: int):
+        def genSpiral(deltaT, label):
             for i in range(n):
                 r = i / n * 5
                 t = 1.75 * i / n * 2 * math.pi + deltaT
@@ -183,7 +185,7 @@ class DataGenerator:
 
 
     @staticmethod
-    def regress_plane(noise: float = 0.0, numSamples: int = 1200) -> list:
+    def regress_plane(noise = 0.0, numSamples = 1200):
         radius = 6
         labelScale = ScaleLinear(domain=[-10, 10], slrange=[-1, 1])
         getLabel = lambda x, y: labelScale(x + y)
@@ -201,7 +203,7 @@ class DataGenerator:
 
 
     @staticmethod
-    def regress_gaussian(noise: float = 0.0, numSamples: int = 1200) -> list:
+    def regress_gaussian(noise = 0.0, numSamples = 1200):
         points = []
         
         labelScale = ScaleLinear(domain=[0.0, 2.0], slrange=[1.0, 0.0], clamp=True)
@@ -215,13 +217,13 @@ class DataGenerator:
             [ 4.0, -2.5, -1.0]
         ]
         
-        def getLabel(x: float, y: float) -> float:
+        def getLabel(x, y):
         # Choose the one that is maximum in abs value.
             curlabel = 0
             for c in gaussians:
-                cx: float = c[0]
-                cy: float = c[1]
-                sign: int = c[2]
+                cx = c[0]
+                cy = c[1]
+                sign = c[2]
                 newLabel = sign * labelScale(dist(Point(x, y), Point(cx, cy)))
                 if abs(newLabel) > abs(curlabel):
                     curlabel = newLabel

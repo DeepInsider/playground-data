@@ -55,27 +55,27 @@ _colors = [
 class DataColor:
 
     @staticmethod
-    def get_all() -> list:
+    def get_all():
         return _colors
 
 
     @staticmethod
-    def get_positive() -> str:
+    def get_positive():
         return _colors[0]
 
 
     @staticmethod
-    def get_neutral() -> str:
+    def get_neutral():
         return _colors[15]
 
 
     @staticmethod
-    def get_negative() -> str:
+    def get_negative():
         return _colors[30]
 
 
     @staticmethod
-    def get_rgb(label: float) -> str:
+    def get_rgb(label):
         """
          0 = index_first
          30 = index_last
