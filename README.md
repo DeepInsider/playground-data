@@ -25,6 +25,8 @@ pip install playground-data
 ## Usage
 
 ```python
+from __future__ import print_function
+
 print('Import plygdata package as pg')
 
 import plygdata as pg
@@ -76,20 +78,26 @@ fig, ax = pg.DataHelper.plot_with_playground_style(X_train, y_train, X_test, y_t
 ```python
 print('Signature of main @staticmethod')
 
-import inspect
+import sys
+if sys.version_info[0] < 3.3: # inspect.signature was introduced at version Python 3.3
+  !pip install funcsigs
 
-inspect.signature(pg.DataHelper.plot_sample)
-# <Signature (X_train:list, y_train:list, X_test:list=None, y_test:list=None, figsize:tuple=(5, 5), dpi:int=100)>
+try:
+    from inspect import signature 
+except ImportError:
+    from funcsigs import signature
+    
+print('pg.DataHelper.plot_sample', str(signature(pg.DataHelper.plot_sample)))
+# pg.DataHelper.plot_sample (data_type, visualize_test_data=False, noise=0.0, test_size=0.5, figsize=(5, 5), dpi=100)
 
-inspect.signature(pg.DataGenerator.classify_two_gauss)
-# <Signature (noise:float=0.0, numSamples:int=500) -> list>
+print('pg.DataGenerator.classify_two_gauss', str(signature(pg.DataGenerator.classify_two_gauss)))
+# pg.DataGenerator.classify_two_gauss (noise=0.0, numSamples=500)
 
-inspect.signature(pg.DataHelper.split_train_test_x_data_label)
-# <Signature (data:list, test_size:float=0.5) -> (<class 'list'>, <class 'list'>, <class 'list'>, <class 'list'>)>
+print('pg.DataHelper.split_train_test_x_data_label', str(signature(pg.DataHelper.split_train_test_x_data_label)))
+# pg.DataHelper.split_train_test_x_data_label (data, test_size=0.5, label_num=1)
 
-inspect.signature(pg.DataHelper.plot_with_playground_style)
-# <Signature (X_train:list, y_train:list, X_test:list=None, y_test:list=None, figsize:tuple=(5, 5), dpi:int=100)>
-
+print('pg.DataHelper.plot_with_playground_style', str(signature(pg.DataHelper.plot_with_playground_style)))
+# pg.DataHelper.plot_with_playground_style (X_train, y_train, X_test=None, y_test=None, figsize=(5, 5), dpi=100)
 ```
 
 ```python
