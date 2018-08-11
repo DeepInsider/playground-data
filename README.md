@@ -12,7 +12,7 @@ This project/package that exists as an aid to the [Nerural Network Playground - 
 
 ## Requirements
 
-- Python 3.6+
+- Python 2: 2.7+ | Python 3: 3.4, 3.5, 3.6+
 - numpy
 - matplotlib
 
