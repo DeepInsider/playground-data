@@ -1,27 +1,32 @@
-# playground-data
+playground-data
+====================================
 
 Data Generation for Neural Network Playground of Deep Insider.
 
 This project/package that exists as an aid to the [Nerural Network Playground - Deep Insider][playground page] which was forked from [tensorflow/playground: Deep playground][original page].
 
-## Official pages
+Official pages
+-------------------------------------------------------------------
 
 - [The python package "playground-data" on PyPI for this project is available here][pypi].
 - [The source for this package is available here][src]. [![Build Status](https://travis-ci.org/DeepInsider/playground-data.svg?branch=master)](https://travis-ci.org/DeepInsider/playground-data)
 
-## Requirements
+Requirements
+-------------------------------------------------------------------
 
 - Python 2: 2.7+ | Python 3: 3.4, 3.5, 3.6+
 - numpy
 - matplotlib
 
-## Install this package using `pip`
+Install this package using `pip`
+-------------------------------------------------------------------
 
 ```bash
 pip install playground-data
 ```
 
-## Usage
+Usage
+-------------------------------------------------------------------
 
 ```python
 from __future__ import print_function
@@ -82,10 +87,10 @@ if sys.version_info[0] < 3.3: # inspect.signature was introduced at version Pyth
   !pip install funcsigs
 
 try:
-    from inspect import signature 
+    from inspect import signature
 except ImportError:
     from funcsigs import signature
-    
+
 print('pg.DataHelper.plot_sample', str(signature(pg.DataHelper.plot_sample)))
 # pg.DataHelper.plot_sample (data_type, visualize_test_data=False, noise=0.0, test_size=0.5, figsize=(5, 5), dpi=100)
 
@@ -105,7 +110,8 @@ print('Imported "playground-data" package version is ...')
 print(pg.__version__)
 ```
 
-## License
+License
+-------------------------------------------------------------------
 
 Copyright 2018 Digital Advantage Inc. All Rights Reserved.
 Licensed under the Apache License, Version 2.0.
