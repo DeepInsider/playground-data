@@ -1,18 +1,18 @@
 
 """ This folder is processed as 'plygdata package'. Initialization modules for this package. """
 
-from . import _version
+from plygdata import _version
 __version__ = _version.__version__
 
 # For importing main classes
-from .datacolor import DataColor
+from plygdata.datacolor import DataColor
 ##from .scalelinear import ScaleLinear   # This is not for user.
-from .datahelper import DatasetType, DataHelper
-from .dataset import DataGenerator
+from plygdata.datahelper import DatasetType, DataHelper
+from plygdata.dataset import DataGenerator
 
 # For importing all modules
-##from . import datacolor
-##from . import scalelinear
-##from . import dataset
-##from . import datahelper
+##from plygdata import datacolor
+##from plygdata import scalelinear
+##from plygdata import dataset
+##from plygdata import datahelper
 ##__all__ = ["datacolor", "scalelinear", "dataset", "datahelper"]

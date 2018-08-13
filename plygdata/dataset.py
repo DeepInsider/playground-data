@@ -20,7 +20,7 @@ from __future__ import division
 
 import random
 import math
-from .scalelinear import ScaleLinear
+from plygdata.scalelinear import ScaleLinear
 
 #class Example2D:
 #    """

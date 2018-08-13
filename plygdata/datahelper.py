@@ -20,8 +20,8 @@ from __future__ import division #, print_function
 import matplotlib.figure as fg
 import matplotlib.pyplot as plt
 import numpy as np
-from .datacolor import DataColor
-from .dataset import DataGenerator
+from plygdata.datacolor import DataColor
+from plygdata.dataset import DataGenerator
 
 
 class DatasetType: # (Enum): # for python 3 syntax
