@@ -1,3 +1,4 @@
+[![Build Status](https://travis-ci.org/DeepInsider/playground-data.svg?branch=master)](https://travis-ci.org/DeepInsider/playground-data)
 
 # playground-data
 
