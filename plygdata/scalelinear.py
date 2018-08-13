@@ -1,7 +1,7 @@
 # ==============================================================================
 # Copyright 2018 Digital Advantage Inc. All Rights Reserved.
 #
-# This is a Python translagtion of [d3/d3-scale/linear.js](https://github.com/d3/d3-scale/blob/master/src/linear.js).
+# This is a Python translation of [d3/d3-scale/linear.js](https://github.com/d3/d3-scale/blob/master/src/linear.js).
 #
 # Licensed under the Apache License, Version 2.0 (the "License")
 # you may not use this file except in compliance with the License.

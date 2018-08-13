@@ -123,7 +123,7 @@ Licensed under the Apache License, Version 2.0.
 Copyright 2010-2015 Mike Bostock. All rights reserved.  
 Licensed under the BSD 3-Clause "New" or "Revised" License.
 
-[playground page]: https://re.deepinsider.jp/playground/index.html
+[playground page]: https://deepinsider.github.io/playground/
 [original page]: https://github.com/tensorflow/playground
 [src]: https://github.com/DeepInsider/playground-data
 [pypi]: https://pypi.org/project/playground-data/
