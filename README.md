@@ -1,5 +1,3 @@
-[![Build Status](https://travis-ci.org/DeepInsider/playground-data.svg?branch=master)](https://travis-ci.org/DeepInsider/playground-data)
-
 # playground-data
 
 Data Generation for Neural Network Playground of Deep Insider.
@@ -9,7 +7,7 @@ This project/package that exists as an aid to the [Nerural Network Playground - 
 ## Official pages
 
 - [The python package "playground-data" on PyPI for this project is available here][pypi].
-- [The source for this package is available here][src].
+- [The source for this package is available here][src]. [![Build Status](https://travis-ci.org/DeepInsider/playground-data.svg?branch=master)](https://travis-ci.org/DeepInsider/playground-data)
 
 ## Requirements
 
