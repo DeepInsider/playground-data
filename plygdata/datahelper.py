@@ -17,7 +17,7 @@
 from __future__ import division #, print_function
 
 #from enum import Enum # for python 3 syntax
-import matplotlib.figure as fg
+#import matplotlib.figure as fg
 import matplotlib.pyplot as plt
 import numpy as np
 from plygdata.datacolor import DataColor
@@ -80,7 +80,7 @@ class DataHelper:
 
 
     @staticmethod
-    def get_playground_axes(fig, enable_grid = False): # : fg.Figure
+    def get_playground_axes(fig): # : fg.Figure
         ax = fig.add_subplot(111)  # Row: 1, Column: 1, Place: 1
         ax.set_facecolor("#e8eaeb")
         ax.spines['top'].set_visible(False)
@@ -94,12 +94,11 @@ class DataHelper:
         ax.set_ylim([-6, 6])
         ax.set_xticks([-6, -5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5, 6])
         ax.set_yticks([-6, -5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5, 6])
+        ax.grid(b=None)
         ax.get_xticklabels()[6].set_color("dimgray")
         ax.get_yticklabels()[6].set_color("dimgray")
-        if enable_grid:
-            ax.grid(color='white', linestyle='-')
-        else:
-            ax.grid(b=None) # to turn off
+        #ax.grid(color='white', linestyle='-')
+        ax.grid(b=None)
         return ax
 
 
@@ -149,10 +148,9 @@ class DataHelper:
         elif data_type == DatasetType.RegressGaussian:
             data_array = DataGenerator.regress_gaussian(noise=noise)
         else:
-            return
+            return None, None
 
         mat = np.array(data_array)
         X_train, y_train, X_test, y_test = DataHelper.split_train_test_x_data_label(mat, test_size=test_size)
-        #fig, ax = \
-        DataHelper.plot_with_playground_style(X_train, y_train, X_test if (visualize_test_data) else None, y_test if (visualize_test_data) else None)
-
+        fig, ax = DataHelper.plot_with_playground_style(X_train, y_train, X_test if (visualize_test_data) else None, y_test if (visualize_test_data) else None)
+        return fig, ax

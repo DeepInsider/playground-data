@@ -55,7 +55,10 @@ dir(pg.DatasetType)
 # 'RegressPlane',
 # ...]
 
-pg.DataHelper.plot_sample(pg.DatasetType.ClassifyCircleData)
+fig, ax = pg.DataHelper.plot_sample(pg.DatasetType.ClassifyCircleData)
+# # uncomment if a graph is not shown
+# import matplotlib.pyplot as plt
+# plt.show()
 ```
 
 ```python
@@ -77,6 +80,9 @@ X_train, y_train, X_test, y_test = pg.DataHelper.split_train_test_x_data_label(d
 
 # Plot the data on the standard graph for Playground
 fig, ax = pg.DataHelper.plot_with_playground_style(X_train, y_train, X_test, y_test)
+# # uncomment if a graph is not shown
+# import matplotlib.pyplot as plt
+# plt.show()
 ```
 
 ```python
