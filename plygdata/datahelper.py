@@ -80,7 +80,7 @@ class DataHelper:
 
 
     @staticmethod
-    def get_playground_axes(fig): # : fg.Figure
+    def get_playground_axes(fig, enable_grid = False): # : fg.Figure
         ax = fig.add_subplot(111)  # Row: 1, Column: 1, Place: 1
         ax.set_facecolor("#e8eaeb")
         ax.spines['top'].set_visible(False)
@@ -96,7 +96,10 @@ class DataHelper:
         ax.set_yticks([-6, -5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5, 6])
         ax.get_xticklabels()[6].set_color("dimgray")
         ax.get_yticklabels()[6].set_color("dimgray")
-        ax.grid(color='white', linestyle='-') # b=None if turing off
+        if enable_grid:
+            ax.grid(color='white', linestyle='-')
+        else:
+            ax.grid(b=None) # to turn off
         return ax
 
 
