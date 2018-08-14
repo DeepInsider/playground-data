@@ -133,6 +133,8 @@ class DataHelper:
         ax_cb.tick_params(axis='y', colors='#777777')
         cb = fig.colorbar(im, cax=ax_cb, ticks=TICKS_VALUE, orientation='horizontal')
         cb.outline.set_edgecolor('white')
+        cb.outline.set_linewidth(0)
+        cb.solids.set_edgecolor("face")
         ax_cb.xaxis.set_ticks_position("bottom")
 
 
