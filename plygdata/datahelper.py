@@ -125,7 +125,7 @@ class DataHelper:
     @staticmethod
     def draw_decision_boundary_of_node(fig, ax, boundary_of_node): # : fg.Figure
         cmap, norm = DataColor.get_colormap()
-        alpha = (255 / 160)
+        alpha = (160 / 255)
         im = ax.imshow(boundary_of_node, extent=RECT_DOMAIN, cmap=cmap, norm=norm, alpha=alpha, interpolation='Bicubic')
         divider = make_axes_locatable(ax)
         ax_cb = divider.append_axes("bottom", size="5%", pad=0.3)
