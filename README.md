@@ -80,6 +80,10 @@ X_train, y_train, X_test, y_test = pg.DataHelper.split_train_test_x_data_label(d
 
 # Plot the data on the standard graph for Playground
 fig, ax = pg.DataHelper.plot_with_playground_style(X_train, y_train, X_test, y_test)
+
+# draw the decision boundary of X1 input (feature)
+pg.DataHelper.draw_decision_boundary(fig, ax, pg.InputType.X1, False)
+
 # # uncomment if a graph is not shown
 # import matplotlib.pyplot as plt
 # plt.show()

@@ -22,6 +22,11 @@ import random
 import math
 from plygdata.scalelinear import ScaleLinear
 
+
+NUM_SAMPLES_CLASSIFY = 500
+NUM_SAMPLES_REGRESS = 1200
+
+
 #class Example2D:
 #    """
 #    A two dimensional example: x and y coordinates with the label.
@@ -95,7 +100,7 @@ def shuffle(array):
 class DataGenerator:
 
     @staticmethod
-    def classify_two_gauss(noise = 0.0, numSamples = 500):
+    def classify_two_gauss(noise = 0.0, numSamples = NUM_SAMPLES_CLASSIFY):
         points = []
 
         varianceScale = ScaleLinear(domain=[0.0, 0.5], slrange=[0.5, 4.0])
@@ -113,7 +118,7 @@ class DataGenerator:
 
 
     @staticmethod
-    def classify_xor(noise = 0.0, numSamples = 500):
+    def classify_xor(noise = 0.0, numSamples = NUM_SAMPLES_CLASSIFY):
 
         def getXORLabel(p):
             return 1 if (p.x * p.y >= 0) else -1
@@ -133,7 +138,7 @@ class DataGenerator:
 
 
     @staticmethod
-    def classify_circle(noise = 0.0, numSamples = 500):
+    def classify_circle(noise = 0.0, numSamples = NUM_SAMPLES_CLASSIFY):
         points = []
         radius = 5.0
 
@@ -166,7 +171,7 @@ class DataGenerator:
 
 
     @staticmethod
-    def classify_spiral(noise = 0.0, numSamples = 500):
+    def classify_spiral(noise = 0.0, numSamples = NUM_SAMPLES_CLASSIFY):
         points = []
         n = numSamples // 2
 
@@ -185,7 +190,7 @@ class DataGenerator:
 
 
     @staticmethod
-    def regress_plane(noise = 0.0, numSamples = 1200):
+    def regress_plane(noise = 0.0, numSamples = NUM_SAMPLES_REGRESS):
         radius = 6
         labelScale = ScaleLinear(domain=[-10, 10], slrange=[-1, 1])
         getLabel = lambda x, y: labelScale(x + y)
@@ -203,7 +208,7 @@ class DataGenerator:
 
 
     @staticmethod
-    def regress_gaussian(noise = 0.0, numSamples = 1200):
+    def regress_gaussian(noise = 0.0, numSamples = NUM_SAMPLES_REGRESS):
         points = []
         
         labelScale = ScaleLinear(domain=[0.0, 2.0], slrange=[1.0, 0.0], clamp=True)

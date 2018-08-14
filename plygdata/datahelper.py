@@ -14,23 +14,38 @@
 # limitations under the License.
 # ==============================================================================
 
-from __future__ import division #, print_function
+from __future__ import division
 
-#from enum import Enum # for python 3 syntax
-#import matplotlib.figure as fg
 import matplotlib.pyplot as plt
+from mpl_toolkits.axes_grid1 import make_axes_locatable
 import numpy as np
 from plygdata.datacolor import DataColor
 from plygdata.dataset import DataGenerator
+from plygdata.playground import Player
 
 
-class DatasetType: # (Enum): # for python 3 syntax
+RECT_DOMAIN = [-6.0, 6.0, -6.0, 6.0]
+POINT_DOMAIN = [-6.0, 6.0]
+TICKS_POINT = [-6, -5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5, 6]
+TICKS_MIDDLE = 6
+TICKS_VALUE = [-1, 0, 1]
+
+class DatasetType:
     ClassifyCircleData = "circle"
     ClassifyXORData = "xor"
     ClassifyTwoGaussData = "gauss"
     ClassifySpiralData = "spiral"
     RegressPlane = "reg-plane"
     RegressGaussian = "reg-gauss"
+
+class InputType:
+    X1 = "x"
+    X2 = "y"
+    X1Squared = "xSquared"
+    X2Squared = "ySquared"
+    X1TimesX2 = "xTimesY"
+    SinX1 = "sinX"
+    SinX2 = "sinY"
 
 
 class DataHelper:
@@ -64,7 +79,7 @@ class DataHelper:
 
         if label_num == 1:
             y_train = np.reshape(y_train, [len(y_train), 1])
-            y_test = np.reshape(y_train, [len(y_test), 1])
+            y_test = np.reshape(y_test, [len(y_test), 1])
 
         # To Pandas example:
         # import numpy as np
@@ -88,18 +103,44 @@ class DataHelper:
         ax.spines['bottom'].set_visible(False)
         ax.spines['left'].set_visible(False)
         ax.yaxis.tick_right()
-        ax.tick_params(axis='x', colors='silver')
-        ax.tick_params(axis='y', colors='silver')
-        ax.set_xlim([-6, 6])
-        ax.set_ylim([-6, 6])
-        ax.set_xticks([-6, -5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5, 6])
-        ax.set_yticks([-6, -5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5, 6])
+        ax.tick_params(axis='x', colors='#bbbbbb')
+        ax.tick_params(axis='y', colors='#bbbbbb')
+        ax.set_xlim(POINT_DOMAIN)
+        ax.set_ylim(POINT_DOMAIN)
+        ax.set_xticks(TICKS_POINT)
+        ax.set_yticks(TICKS_POINT)
         ax.grid(b=None)
-        ax.get_xticklabels()[6].set_color("dimgray")
-        ax.get_yticklabels()[6].set_color("dimgray")
+        ax.get_xticklabels()[TICKS_MIDDLE].set_color("#333333")
+        ax.get_yticklabels()[TICKS_MIDDLE].set_color("#333333")
         #ax.grid(color='white', linestyle='-')
         ax.grid(b=None)
         return ax
+
+
+    @staticmethod
+    def get_all_boundaries(boundaries=None, discretize=False):
+        boundaries = Player.update_decision_boundary(boundaries, discretize)
+        return boundaries
+
+
+    @staticmethod
+    def draw_decision_boundary_of_node(fig, ax, boundary_of_node): # : fg.Figure
+        cmap, norm = DataColor.get_colormap()
+        alpha = (255 / 160)
+        im = ax.imshow(boundary_of_node, extent=RECT_DOMAIN, cmap=cmap, norm=norm, alpha=alpha, interpolation='Bicubic')
+        divider = make_axes_locatable(ax)
+        ax_cb = divider.append_axes("bottom", size="5%", pad=0.3)
+        ax_cb.tick_params(axis='x', colors='#777777')
+        ax_cb.tick_params(axis='y', colors='#777777')
+        cb = fig.colorbar(im, cax=ax_cb, ticks=TICKS_VALUE, orientation='horizontal')
+        cb.outline.set_edgecolor('white')
+        ax_cb.xaxis.set_ticks_position("bottom")
+
+
+    @staticmethod
+    def draw_decision_boundary(fig, ax, node_id=InputType.X1, discretize=False): # : fg.Figure
+        boundaries = DataHelper.get_all_boundaries(None, discretize)
+        DataHelper.draw_decision_boundary_of_node(fig, ax, boundaries[node_id])
 
 
     @staticmethod

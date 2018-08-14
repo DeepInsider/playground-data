@@ -7,8 +7,9 @@ __version__ = _version.__version__
 # For importing main classes
 from plygdata.datacolor import DataColor
 ##from .scalelinear import ScaleLinear   # This is not for user.
-from plygdata.datahelper import DatasetType, DataHelper
+from plygdata.datahelper import DatasetType, InputType, DataHelper
 from plygdata.dataset import DataGenerator
+from plygdata.playground import Player
 
 # For importing all modules
 ##from plygdata import datacolor

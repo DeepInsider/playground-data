@@ -14,6 +14,9 @@
 # limitations under the License.
 # ==============================================================================
 
+from __future__ import division
+
+from matplotlib.colors import LinearSegmentedColormap, Normalize
 import math
 
 
@@ -82,3 +85,12 @@ class DataColor:
          15.5 = point_half
         """
         return _colors[max(0, min(30, math.floor(15.5 * (label + 1))))]
+
+    @staticmethod
+    def get_colormap(x_domain=[-1.0, 1.0]):
+        vmin = x_domain[0]
+        vmax = x_domain[1]
+        cmap = LinearSegmentedColormap.from_list('plygdata_cmap', _colors)
+        norm = Normalize(vmin=vmin, vmax=vmax)
+        return cmap, norm
+
