@@ -82,7 +82,7 @@ X_train, y_train, X_test, y_test = pg.DataHelper.split_train_test_x_data_label(d
 fig, ax = pg.DataHelper.plot_with_playground_style(X_train, y_train, X_test, y_test)
 
 # draw the decision boundary of X1 input (feature)
-pg.DataHelper.draw_decision_boundary(fig, ax, pg.InputType.X1, False)
+pg.DataHelper.draw_decision_boundary(fig, ax, node_id=pg.InputType.X1, discretize=False)
 
 # # uncomment if a graph is not shown
 # import matplotlib.pyplot as plt
@@ -93,7 +93,7 @@ pg.DataHelper.draw_decision_boundary(fig, ax, pg.InputType.X1, False)
 print('Signature of main @staticmethod')
 
 import sys
-if sys.version_info[0] < 3.3: # inspect.signature was introduced at version Python 3.3
+if sys.version_info[0] < 3: # inspect.signature was introduced at version Python 3.3
   !pip install funcsigs
 
 try:

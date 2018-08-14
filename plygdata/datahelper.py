@@ -109,11 +109,10 @@ class DataHelper:
         ax.set_ylim(POINT_DOMAIN)
         ax.set_xticks(TICKS_POINT)
         ax.set_yticks(TICKS_POINT)
-        ax.grid(b=None)
         ax.get_xticklabels()[TICKS_MIDDLE].set_color("#333333")
         ax.get_yticklabels()[TICKS_MIDDLE].set_color("#333333")
         #ax.grid(color='white', linestyle='-')
-        ax.grid(b=None)
+        ax.grid(b=False)
         return ax
 
 
