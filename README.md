@@ -41,6 +41,12 @@ import plygdata as pg
 ```
 
 ```python
+print('Imported "playground-data" package version is ...')
+
+print(pg.__version__)
+```
+
+```python
 print('Code for plotting sample graph')
 
 import pprint
@@ -79,7 +85,7 @@ data_array = pg.generate(pg.DatasetType.ClassifyCircleData, data_noise)
 X_train, y_train, X_test, y_test = pg.split_train_test_x_data_label(data_array, test_size=test_data_ratio)
 
 # Plot the data on the standard graph for Playground
-fig, ax = pg.plot_with_playground_style(X_train, y_train, X_test, y_test)
+fig, ax = pg.plot_with_playground_style(X_train, y_train, X_test, y_test, figsize = (6, 6), dpi = 100)
 
 # draw the decision boundary of X1 input (feature)
 pg.draw_decision_boundary(fig, ax, node_id=pg.InputType.X1, discretize=False)
@@ -112,12 +118,6 @@ print('pg.split_train_test_x_data_label', str(signature(pg.split_train_test_x_da
 
 print('pg.plot_with_playground_style', str(signature(pg.plot_with_playground_style)))
 # pg.plot_with_playground_style (X_train, y_train, X_test=None, y_test=None, figsize=(5, 5), dpi=100)
-```
-
-```python
-print('Imported "playground-data" package version is ...')
-
-print(pg.__version__)
 ```
 
 License
