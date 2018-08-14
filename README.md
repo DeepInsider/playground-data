@@ -130,11 +130,11 @@ Licensed under the Apache License, Version 2.0.
 
 This project uses the JavaScript-to-Python-translation of the following open-source code:
 
- [Deep playground/src/dataset.ts][dataset.py origin]  
+[tensorflow / playground (Deep playground) / dataset.ts][dataset.py origin], [playground.ts][playground.py origin]  
 Copyright 2016 Google Inc. All Rights Reserved.  
 Licensed under the Apache License, Version 2.0.
 
- [d3/d3-scale/linear.js][scalelinear.py origin]  
+ [d3 / d3-scale / linear.js][scalelinear.py origin]  
 Copyright 2010-2015 Mike Bostock. All rights reserved.  
 Licensed under the BSD 3-Clause "New" or "Revised" License.
 
@@ -143,4 +143,5 @@ Licensed under the BSD 3-Clause "New" or "Revised" License.
 [src]: https://github.com/DeepInsider/playground-data
 [pypi]: https://pypi.org/project/playground-data/
 [dataset.py origin]: https://github.com/tensorflow/playground/blob/master/src/dataset.ts
+[playground.py origin]: https://github.com/tensorflow/playground/blob/master/src/playground.ts
 [scalelinear.py origin]: https://github.com/d3/d3-scale/blob/master/src/linear.js

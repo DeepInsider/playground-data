@@ -1,7 +1,7 @@
 # ==============================================================================
 # Copyright 2018 Digital Advantage Inc. All Rights Reserved.
 #
-# This is a Python implementation of [Deep playground](https://github.com/tensorflow/playground).
+# This is a Python implementation of [tensorflow / playground (Deep playground) / dataset.ts](https://github.com/tensorflow/playground/blob/master/src/dataset.ts).
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
