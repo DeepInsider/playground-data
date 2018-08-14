@@ -18,13 +18,17 @@
 
 from __future__ import division
 from plygdata.scalelinear import ScaleLinear
+from plygdata.state import DatasetType
+from plygdata.dataset import shuffle
 import math
 import numpy as np
+
 
 DENSITY = 100
 
 POINT_DOMAIN = [-6.0, 6.0]
 VALUE_DOMAIN = [-1.0, 1.0]
+
 
 INPUTS = {
     'x': {'f': lambda x, y: x, 'label': 'X_1'},
@@ -38,6 +42,26 @@ INPUTS = {
 
 
 class Player:
+
+    # ...
+    ''' Plays/pauses the player. '''
+    # playOrPause()
+    # onPlayPause(callback: (isPlaying: boolean) => void)
+    # play()
+    # pause()
+    # private start(localTimerIndex: number)
+    # ...
+    # function makeGUI()
+    # function updateBiasesUI(network: nn.Node[][])
+    # function updateWeightsUI(network: nn.Node[][], container: d3.Selection<any>)
+    # function drawNode(cx: number, cy: number, nodeId: string, isInput: boolean, container: d3.Selection<any>, node?: nn.Node)
+    # # Draw network
+    # function drawNetwork(network: nn.Node[][]): void
+    # function getRelativeHeight(selection: d3.Selection<any>)
+    # function addPlusMinusControl(x: number, layerIdx: number)
+    # function updateHoverCard(type: HoverType, nodeOrLink?: nn.Node | nn.Link, coordinates?: [number, number])
+    # function drawLink(input: nn.Link, node2coord: {[id: string]: {cx: number, cy: number}}, network: nn.Node[][], container: d3.Selection<any>, isFirst: boolean, index: number, length: number)
+
 
     @staticmethod
     def update_decision_boundary(boundary = None, discretize=False):
@@ -53,7 +77,7 @@ class Player:
         :return:
         '''
 
-        first_time = True if boundary == None else False
+        first_time = True if boundary is None else False
         if first_time:
             boundary = {}
             # Go through all predefined inputs.
@@ -88,3 +112,29 @@ class Player:
                 # });
 
         return boundary
+
+
+    # function getLoss(network: nn.Node[][], dataPoints: Example2D[]): number
+    # function updateUI(firstStep = false)
+    # function zeroPad(n: number): string
+    # function addCommas(s: string): string
+    # function humanReadable(n: number): string
+    # function constructInputIds(): string[]
+    # function constructInput(x: number, y: number): number[]
+    # function oneStep(): void
+    # export function getOutputWeights(network: nn.Node[][]): number[]
+    # function reset(onStartup=false)
+    # function initTutorial()
+    # function drawDatasetThumbnails()
+    # function hideControls()
+    # generate_data(true) -> dateset.py
+    # function userHasInteracted()
+    # function simulationStarted()
+
+
+# drawDatasetThumbnails()
+# initTutorial()
+# makeGUI()
+# generate_data(true)
+# reset(true)
+# hideControls()

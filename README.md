@@ -36,17 +36,17 @@ print('Import plygdata package as pg')
 import plygdata as pg
 
 # Or, you can 'import' class directly like this:
-# from plygdata.datahelper import DataHelper, DatasetType
-# from plygdata.dataset import DataGenerator
+# from plygdata.datahelper import DatasetType
+# from plygdata.dataset import generate
 ```
 
 ```python
 print('Code for plotting sample graph')
 
-#dir(pg.DataHelper)    # How to find class members
-#dir(pg.DataGenerator)
+import pprint
+pprint.pprint(dir(pg))    # How to find class members
 
-dir(pg.DatasetType)
+pprint.pprint(dir(pg.DatasetType))
 #['ClassifyCircleData',
 # 'ClassifySpiralData',
 # 'ClassifyTwoGaussData',
@@ -55,7 +55,7 @@ dir(pg.DatasetType)
 # 'RegressPlane',
 # ...]
 
-fig, ax = pg.DataHelper.plot_sample(pg.DatasetType.ClassifyCircleData)
+fig, ax = pg.plot_sample(pg.DatasetType.ClassifyCircleData)
 # # uncomment if a graph is not shown
 # import matplotlib.pyplot as plt
 # plt.show()
@@ -68,21 +68,21 @@ data_noise=0.0
 test_data_ratio = 0.5
 
 # Generate data
-data_array = pg.DataGenerator.classify_two_gauss(noise=data_noise)
-#data_array = pg.DataGenerator.classify_circle(noise=data_noise)
-#data_array = pg.DataGenerator.classify_spiral(noise=data_noise)
-#data_array = pg.DataGenerator.classify_xor(noise=data_noise)
-#data_array = pg.DataGenerator.regress_gaussian(noise=data_noise)
-#data_array = pg.DataGenerator.regress_plane(noise=data_noise)
+data_array = pg.generate(pg.DatasetType.ClassifyCircleData, data_noise)
+#data_array = pg.generate(pg.DatasetType.ClassifyXORData, data_noise)
+#data_array = pg.generate(pg.DatasetType.ClassifyTwoGaussData, data_noise)
+#data_array = pg.generate(pg.DatasetType.ClassifySpiralData, data_noise)
+#data_array = pg.generate(pg.DatasetType.RegressPlane, data_noise)
+#data_array = pg.generate(pg.DatasetType.RegressGaussian, data_noise)
 
 # Divide the data for training and testing at a specified ratio (further, separate each data into Coordinate point data part and teacher label part)
-X_train, y_train, X_test, y_test = pg.DataHelper.split_train_test_x_data_label(data_array, test_size=test_data_ratio)
+X_train, y_train, X_test, y_test = pg.split_train_test_x_data_label(data_array, test_size=test_data_ratio)
 
 # Plot the data on the standard graph for Playground
-fig, ax = pg.DataHelper.plot_with_playground_style(X_train, y_train, X_test, y_test)
+fig, ax = pg.plot_with_playground_style(X_train, y_train, X_test, y_test)
 
 # draw the decision boundary of X1 input (feature)
-pg.DataHelper.draw_decision_boundary(fig, ax, node_id=pg.InputType.X1, discretize=False)
+pg.draw_decision_boundary(fig, ax, node_id=pg.InputType.X1, discretize=False)
 
 # # uncomment if a graph is not shown
 # import matplotlib.pyplot as plt
@@ -101,17 +101,17 @@ try:
 except ImportError:
     from funcsigs import signature
 
-print('pg.DataHelper.plot_sample', str(signature(pg.DataHelper.plot_sample)))
-# pg.DataHelper.plot_sample (data_type, visualize_test_data=False, noise=0.0, test_size=0.5, figsize=(5, 5), dpi=100)
+print('pg.plot_sample', str(signature(pg.plot_sample)))
+# pg.plot_sample (data_type, noise=0.0, test_size=0.5, visualize_test_data=False, figsize=(5, 5), dpi=100)
 
-print('pg.DataGenerator.classify_two_gauss', str(signature(pg.DataGenerator.classify_two_gauss)))
-# pg.DataGenerator.classify_two_gauss (noise=0.0, numSamples=500)
+print('pg.generate', str(signature(pg.generate)))
+# pg.generate (data_type, noise=0.0)
 
-print('pg.DataHelper.split_train_test_x_data_label', str(signature(pg.DataHelper.split_train_test_x_data_label)))
-# pg.DataHelper.split_train_test_x_data_label (data, test_size=0.5, label_num=1)
+print('pg.split_train_test_x_data_label', str(signature(pg.split_train_test_x_data_label)))
+# pg.split_train_test_x_data_label (data, test_size=0.5, label_num=1)
 
-print('pg.DataHelper.plot_with_playground_style', str(signature(pg.DataHelper.plot_with_playground_style)))
-# pg.DataHelper.plot_with_playground_style (X_train, y_train, X_test=None, y_test=None, figsize=(5, 5), dpi=100)
+print('pg.plot_with_playground_style', str(signature(pg.plot_with_playground_style)))
+# pg.plot_with_playground_style (X_train, y_train, X_test=None, y_test=None, figsize=(5, 5), dpi=100)
 ```
 
 ```python

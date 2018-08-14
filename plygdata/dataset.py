@@ -21,6 +21,7 @@ from __future__ import division
 import random
 import math
 from plygdata.scalelinear import ScaleLinear
+from plygdata.state import DatasetType
 
 
 NUM_SAMPLES_CLASSIFY = 500
@@ -97,10 +98,30 @@ def shuffle(array):
         array[index] = temp
 
 
+def generate(data_type, noise = 0.0):
+
+    if data_type == DatasetType.ClassifyTwoGaussData:
+        data_array = DataGenerator.classify_two_gauss(NUM_SAMPLES_CLASSIFY, noise=noise)
+    elif data_type == DatasetType.ClassifyXORData:
+        data_array = DataGenerator.classify_xor(NUM_SAMPLES_CLASSIFY, noise=noise)
+    elif data_type == DatasetType.ClassifyCircleData:
+        data_array = DataGenerator.classify_circle(NUM_SAMPLES_CLASSIFY, noise=noise)
+    elif data_type == DatasetType.ClassifySpiralData:
+        data_array = DataGenerator.classify_spiral(NUM_SAMPLES_CLASSIFY, noise=noise)
+    elif data_type == DatasetType.RegressPlane:
+        data_array = DataGenerator.regress_plane(NUM_SAMPLES_REGRESS, noise=noise)
+    elif data_type == DatasetType.RegressGaussian:
+        data_array = DataGenerator.regress_gaussian(NUM_SAMPLES_REGRESS, noise=noise)
+    else:
+        return None
+
+    return data_array
+
+
 class DataGenerator:
 
     @staticmethod
-    def classify_two_gauss(noise = 0.0, numSamples = NUM_SAMPLES_CLASSIFY):
+    def classify_two_gauss(numSamples, noise = 0.0):
         points = []
 
         varianceScale = ScaleLinear(domain=[0.0, 0.5], slrange=[0.5, 4.0])
@@ -118,7 +139,7 @@ class DataGenerator:
 
 
     @staticmethod
-    def classify_xor(noise = 0.0, numSamples = NUM_SAMPLES_CLASSIFY):
+    def classify_xor(numSamples, noise = 0.0):
 
         def getXORLabel(p):
             return 1 if (p.x * p.y >= 0) else -1
@@ -138,7 +159,7 @@ class DataGenerator:
 
 
     @staticmethod
-    def classify_circle(noise = 0.0, numSamples = NUM_SAMPLES_CLASSIFY):
+    def classify_circle(numSamples, noise = 0.0):
         points = []
         radius = 5.0
 
@@ -171,7 +192,7 @@ class DataGenerator:
 
 
     @staticmethod
-    def classify_spiral(noise = 0.0, numSamples = NUM_SAMPLES_CLASSIFY):
+    def classify_spiral(numSamples, noise = 0.0):
         points = []
         n = numSamples // 2
 
@@ -190,7 +211,7 @@ class DataGenerator:
 
 
     @staticmethod
-    def regress_plane(noise = 0.0, numSamples = NUM_SAMPLES_REGRESS):
+    def regress_plane(numSamples, noise = 0.0):
         radius = 6
         labelScale = ScaleLinear(domain=[-10, 10], slrange=[-1, 1])
         getLabel = lambda x, y: labelScale(x + y)
@@ -208,7 +229,7 @@ class DataGenerator:
 
 
     @staticmethod
-    def regress_gaussian(noise = 0.0, numSamples = NUM_SAMPLES_REGRESS):
+    def regress_gaussian(numSamples, noise = 0.0):
         points = []
         
         labelScale = ScaleLinear(domain=[0.0, 2.0], slrange=[1.0, 0.0], clamp=True)
