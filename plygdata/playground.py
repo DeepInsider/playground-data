@@ -18,8 +18,6 @@
 
 from __future__ import division
 from plygdata.scalelinear import ScaleLinear
-from plygdata.state import DatasetType
-from plygdata.dataset import shuffle
 import math
 import numpy as np
 

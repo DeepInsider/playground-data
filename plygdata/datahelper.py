@@ -19,13 +19,11 @@ from __future__ import division
 import matplotlib.pyplot as plt
 from mpl_toolkits.axes_grid1 import make_axes_locatable
 import numpy as np
-from plygdata.datacolor import DataColor
 from plygdata.dataset import generate
-from plygdata.playground import Player
-from plygdata.state import DatasetType, InputType
+from plygdata.state import InputType
+from plygdata.heatmap import HeatMap
 
 
-RECT_DOMAIN = [-6.0, 6.0, -6.0, 6.0]
 POINT_DOMAIN = [-6.0, 6.0]
 TICKS_POINT = [-6, -5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5, 6]
 TICKS_MIDDLE = 6
@@ -75,7 +73,15 @@ def split_train_test_x_data_label(data, test_size = 0.5, label_num = 1): #  -> (
     return X_train, y_train, X_test, y_test
 
 
-def get_playground_axes(fig): # : fg.Figure
+def get_playground_figure(enable_colorbar=False):
+    if enable_colorbar:
+        fig = plt.figure(figsize=(6, 6), dpi=100)
+    else:
+        fig = plt.figure(figsize=(5, 5), dpi=100)
+    return fig
+
+
+def get_playground_axes(fig):
     ax = fig.add_subplot(111)  # Row: 1, Column: 1, Place: 1
     ax.set_facecolor("#e8eaeb")
     ax.spines['top'].set_visible(False)
@@ -96,32 +102,15 @@ def get_playground_axes(fig): # : fg.Figure
     return ax
 
 
-def get_all_boundaries(boundaries=None, discretize=False):
-    boundaries = Player.update_decision_boundary(boundaries, discretize)
-    return boundaries
+def plot_points(ax, X_train, y_train, X_test=None, y_test=None):
+
+    HeatMap.updateTrainPoints(ax, X_train, y_train)
+
+    if all([X_test is not None, y_test is not None]):
+        HeatMap.updateTestPoints(ax, X_test, y_test)
 
 
-def draw_decision_boundary_of_node(fig, ax, boundary_of_node): # : fg.Figure
-    cmap, norm = DataColor.get_colormap()
-    alpha = (160 / 255)
-    im = ax.imshow(boundary_of_node, extent=RECT_DOMAIN, cmap=cmap, norm=norm, alpha=alpha, interpolation='Bicubic')
-    divider = make_axes_locatable(ax)
-    ax_cb = divider.append_axes("bottom", size="5%", pad=0.3)
-    ax_cb.tick_params(axis='x', colors='#777777')
-    ax_cb.tick_params(axis='y', colors='#777777')
-    cb = fig.colorbar(im, cax=ax_cb, ticks=TICKS_VALUE, orientation='horizontal')
-    cb.outline.set_edgecolor('white')
-    cb.outline.set_linewidth(0)
-    cb.solids.set_edgecolor("face")
-    ax_cb.xaxis.set_ticks_position("bottom")
-
-
-def draw_decision_boundary(fig, ax, node_id=InputType.X1, discretize=False): # : fg.Figure
-    boundaries = get_all_boundaries(None, discretize)
-    draw_decision_boundary_of_node(fig, ax, boundaries[node_id])
-
-
-def plot_with_playground_style(X_train, y_train, X_test = None, y_test = None, figsize = (5, 5), dpi = 100):
+def plot_points_with_playground_style(X_train, y_train, X_test=None, y_test=None, figsize=(5, 5), dpi=100):
     """
     if width 5 inches x height 5 inches x dpi 100, = 500 x 500 dots figure will be created.
 
@@ -138,19 +127,34 @@ def plot_with_playground_style(X_train, y_train, X_test = None, y_test = None, f
     # get the axes (Coordinate axis) designed for NeuralNetwork Playground of Deep Insider.
     ax = get_playground_axes(fig)
 
-    for i in range(len(X_train)):
-        ax.scatter(X_train[i, 0], X_train[i, 1], s=20, c=DataColor.get_rgb(y_train[i]), alpha=0.9, linewidths=0.7,
-                    edgecolors="#ffffff")
-
-    if all([X_test is not None, y_test is not None]):
-        for n in range(len(X_test)):
-            ax.scatter(X_test[n, 0], X_test[n, 1], s=20, c=DataColor.get_rgb(y_test[n]), alpha=0.9, linewidths=0.7,
-                    edgecolors="#555555")
+    plot_points(ax, X_train, y_train, X_test, y_test)
 
     return fig, ax
 
 
-def plot_sample(data_type, noise = 0.0, test_size = 0.5, visualize_test_data = False, figsize = (5, 5), dpi = 100):
+def _add_colorbar_on_bottom(fig, ax, im):
+    divider = make_axes_locatable(ax)
+    ax_cb = divider.append_axes("bottom", size="5%", pad=0.3)
+    ax_cb.tick_params(axis='x', colors='#777777')
+    ax_cb.tick_params(axis='y', colors='#777777')
+    cb = fig.colorbar(im, cax=ax_cb, ticks=TICKS_VALUE, orientation='horizontal')
+    cb.outline.set_edgecolor('white')
+    cb.outline.set_linewidth(0)
+    cb.solids.set_edgecolor("face")
+    ax_cb.xaxis.set_ticks_position("bottom")
+
+
+def draw_decision_boundary(fig, ax, node_id=InputType.X1, discretize=False, enable_colorbar=True):
+
+    im = HeatMap.updateBackground(ax, None, node_id, discretize)
+
+    if enable_colorbar:
+        _add_colorbar_on_bottom(fig, ax, im)
+
+    return im
+
+
+def plot_sample(data_type, noise=0.0, test_size=0.5, visualize_test_data=False, figsize=(5, 5), dpi=100, node_id=None, discretize=False):
 
     data_array = generate(data_type, noise)
     if data_array is None:
@@ -158,5 +162,10 @@ def plot_sample(data_type, noise = 0.0, test_size = 0.5, visualize_test_data = F
 
     mat = np.array(data_array)
     X_train, y_train, X_test, y_test = split_train_test_x_data_label(mat, test_size=test_size)
-    fig, ax = plot_with_playground_style(X_train, y_train, X_test if (visualize_test_data) else None, y_test if (visualize_test_data) else None)
+
+    fig, ax = plot_points_with_playground_style(X_train, y_train, X_test if (visualize_test_data) else None, y_test if (visualize_test_data) else None)
+
+    if node_id is not None:
+        draw_decision_boundary(fig, ax, node_id=node_id, discretize=discretize)
+
     return fig, ax

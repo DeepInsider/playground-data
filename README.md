@@ -35,7 +35,7 @@ print('Import plygdata package as pg')
 
 import plygdata as pg
 
-# Or, you can 'import' class directly like this:
+# Or, you can 'import' classes and functions directly like this:
 # from plygdata.datahelper import DatasetType
 # from plygdata.dataset import generate
 ```
@@ -85,7 +85,13 @@ data_array = pg.generate(pg.DatasetType.ClassifyCircleData, data_noise)
 X_train, y_train, X_test, y_test = pg.split_train_test_x_data_label(data_array, test_size=test_data_ratio)
 
 # Plot the data on the standard graph for Playground
-fig, ax = pg.plot_with_playground_style(X_train, y_train, X_test, y_test, figsize = (6, 6), dpi = 100)
+fig, ax = pg.plot_points_with_playground_style(X_train, y_train, X_test, y_test, figsize = (6, 6), dpi = 100)
+
+# # get figure + axes of matplotlib graph and plot the data points
+# fig = pg.get_playground_figure(enable_colorbar=True)
+# ax = pg.get_playground_axes(fig)
+# pg.plot_points(ax, X_train, y_train, X_test, y_test)
+# # These 3 lines equal to `plot_points_with_playground_style` function
 
 # draw the decision boundary of X1 input (feature)
 pg.draw_decision_boundary(fig, ax, node_id=pg.InputType.X1, discretize=False)
@@ -108,7 +114,7 @@ except ImportError:
     from funcsigs import signature
 
 print('pg.plot_sample', str(signature(pg.plot_sample)))
-# pg.plot_sample (data_type, noise=0.0, test_size=0.5, visualize_test_data=False, figsize=(5, 5), dpi=100)
+# pg.plot_sample (data_type, noise=0.0, test_size=0.5, visualize_test_data=False, figsize=(5, 5), dpi=100, node_id=None, discretize=False)
 
 print('pg.generate', str(signature(pg.generate)))
 # pg.generate (data_type, noise=0.0)
@@ -116,8 +122,21 @@ print('pg.generate', str(signature(pg.generate)))
 print('pg.split_train_test_x_data_label', str(signature(pg.split_train_test_x_data_label)))
 # pg.split_train_test_x_data_label (data, test_size=0.5, label_num=1)
 
-print('pg.plot_with_playground_style', str(signature(pg.plot_with_playground_style)))
-# pg.plot_with_playground_style (X_train, y_train, X_test=None, y_test=None, figsize=(5, 5), dpi=100)
+print('pg.plot_points_with_playground_style', str(signature(pg.plot_points_with_playground_style)))
+# pg.plot_points_with_playground_style (X_train, y_train, X_test=None, y_test=None, figsize=(5, 5), dpi=100)
+
+print('pg.get_playground_figure', str(signature(pg.get_playground_figure)))
+# pg.get_playground_figure (enable_colorbar=False)
+
+print('pg.get_playground_axes', str(signature(pg.get_playground_axes)))
+# pg.get_playground_axes (fig)
+
+print('pg.plot_points', str(signature(pg.plot_points)))
+# pg.plot_points (ax, X_train, y_train, X_test=None, y_test=None)
+
+print('pg.draw_decision_boundary', str(signature(pg.draw_decision_boundary)))
+# pg.draw_decision_boundary (fig, ax, node_id='x', discretize=False, enable_colorbar=True)
+
 ```
 
 License
@@ -130,7 +149,7 @@ Licensed under the Apache License, Version 2.0.
 
 This project uses the JavaScript-to-Python-translation of the following open-source code:
 
-[tensorflow / playground (Deep playground) / dataset.ts][dataset.py origin], [playground.ts][playground.py origin]  
+[tensorflow / playground (Deep playground) / dataset.ts][dataset.py origin], [heatmap.ts][heatmap.py origin], [playground.ts][playground.py origin], [state.ts][state.py origin]  
 Copyright 2016 Google Inc. All Rights Reserved.  
 Licensed under the Apache License, Version 2.0.
 
@@ -143,5 +162,7 @@ Licensed under the BSD 3-Clause "New" or "Revised" License.
 [src]: https://github.com/DeepInsider/playground-data
 [pypi]: https://pypi.org/project/playground-data/
 [dataset.py origin]: https://github.com/tensorflow/playground/blob/master/src/dataset.ts
+[heatmap.py origin]: https://github.com/tensorflow/playground/blob/master/src/heatmap.ts
 [playground.py origin]: https://github.com/tensorflow/playground/blob/master/src/playground.ts
 [scalelinear.py origin]: https://github.com/d3/d3-scale/blob/master/src/linear.js
+[state.py origin]: https://github.com/tensorflow/playground/blob/master/src/state.ts
