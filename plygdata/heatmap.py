@@ -68,29 +68,39 @@ class HeatMap:
     def updateTestPoints(ax, X_test, y_test):
         HeatMap.updateCircles(ax, X_test, y_test, "#555555")
 
-    # export function reduceMatrix(matrix: number[][], factor: number): number[][] {
-    #   if (matrix.length !== matrix[0].length) {
-    #     throw new Error("The provided matrix must be a square matrix");
-    #   }
-    #   if (matrix.length % factor !== 0) {
-    #     throw new Error("The width/height of the matrix must be divisible by " +
-    #         "the reduction factor");
-    #   }
-    #   let result: number[][] = new Array(matrix.length / factor);
-    #   for (let i = 0; i < matrix.length; i += factor) {
-    #     result[i / factor] = new Array(matrix.length / factor);
-    #     for (let j = 0; j < matrix.length; j += factor) {
-    #       let avg = 0;
-    #       // Sum all the values in the neighborhood.
-    #       for (let k = 0; k < factor; k++) {
-    #         for (let l = 0; l < factor; l++) {
-    #           avg += matrix[i + k][j + l];
-    #         }
-    #       }
-    #       avg /= (factor * factor);
-    #       result[i / factor][j / factor] = avg;
-    #     }
-    #   }
-    #   return result;
-    # }
+
+    @staticmethod
+    def reduceMatrix(matrix, factor):
+
+        len_matrix = len(matrix)
+
+        if len_matrix != len(matrix[0]):
+            raise ValueError("The provided matrix must be a square matrix")
+
+        if len_matrix % factor != 0:
+            raise ValueError("The width/height of the matrix must be divisible by the reduction factor")
+
+        result = [None] * (len_matrix / factor)
+
+        try:
+            zrange = xrange
+        except NameError:
+            zrange = range
+
+        for i in zrange(0, len_matrix, factor):
+
+            result[i / factor] = [None] * (matrix.length / factor)
+
+            for j in zrange(0, len_matrix, factor):
+                avg = 0
+
+                # Sum all the values in the neighborhood.
+                for k in range(factor):
+                    for l in range(factor):
+                        avg += matrix[i + k][j + l]
+
+                avg = avg / (factor * factor)
+                result[i / factor][j / factor] = avg
+
+        return result
 
