@@ -51,3 +51,22 @@ class InputType:
     SinX1 = "sinX"
     SinX2 = "sinY"
 
+''' The names of Layer data-type. '''
+class LayerType:
+    L1 = "1"
+    L2 = "2"
+    L3 = "3"
+    L4 = "4"
+    L5 = "5"
+    L6 = "6"
+
+''' The names of Neuron data-type. '''
+class NeuronType:
+    N1 = "1"
+    N2 = "2"
+    N3 = "3"
+    N4 = "4"
+    N5 = "5"
+    N6 = "6"
+    N7 = "7"
+    N8 = "8"
