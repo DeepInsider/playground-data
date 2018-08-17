@@ -19,7 +19,7 @@ from __future__ import division
 import matplotlib.pyplot as plt
 from mpl_toolkits.axes_grid1 import make_axes_locatable
 import numpy as np
-from plygdata.dataset import generate
+from plygdata.dataset import generate_data
 from plygdata.state import InputType
 from plygdata.heatmap import HeatMap
 
@@ -30,7 +30,7 @@ TICKS_MIDDLE = 6
 TICKS_VALUE = [-1, 0, 1]
 
 
-def split_train_test_x_data_label(data, test_size = 0.5, label_num = 1): #  -> (list, list, list, list)
+def split_data(data, test_size = 0.5, label_num = 1): #  -> (list, list, list, list)
 
     len_data = len(data)
     if len_data == 0:
@@ -156,12 +156,12 @@ def draw_decision_boundary(fig, ax, node_id=InputType.X1, discretize=False, enab
 
 def plot_sample(data_type, noise=0.0, test_size=0.5, visualize_test_data=False, figsize=(5, 5), dpi=100, node_id=None, discretize=False):
 
-    data_array = generate(data_type, noise)
+    data_array = generate_data(data_type, noise)
     if data_array is None:
         return None, None
 
     mat = np.array(data_array)
-    X_train, y_train, X_test, y_test = split_train_test_x_data_label(mat, test_size=test_size)
+    X_train, y_train, X_test, y_test = split_data(mat, test_size=test_size)
 
     fig, ax = plot_points_with_playground_style(X_train, y_train, X_test if (visualize_test_data) else None, y_test if (visualize_test_data) else None)
 

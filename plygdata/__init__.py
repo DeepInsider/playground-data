@@ -7,8 +7,8 @@ __version__ = _version.__version__
 # For importing main classes
 from plygdata.scalelinear import ScaleLinear
 from plygdata.datacolor import DataColor
-from plygdata.datahelper import\
-    split_train_test_x_data_label,\
+from plygdata.datahelper import \
+    split_data,\
     get_playground_figure,\
     get_playground_axes,\
     plot_points, \
@@ -18,7 +18,8 @@ from plygdata.datahelper import\
     predict_classes, \
     predict_proba, \
     predict_classes_proba
-from plygdata.dataset import generate
+from plygdata.dataset import  \
+    generate_data
 from plygdata.playground import Player
 from plygdata.state import DatasetType, InputType
 

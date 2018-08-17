@@ -98,7 +98,7 @@ def shuffle(array):
         array[index] = temp
 
 
-def generate(data_type, noise = 0.0):
+def generate_data(data_type, noise = 0.0):
 
     if data_type == DatasetType.ClassifyTwoGaussData:
         data_array = DataGenerator.classify_two_gauss(NUM_SAMPLES_CLASSIFY, noise=noise)

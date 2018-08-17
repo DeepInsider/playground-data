@@ -74,15 +74,15 @@ data_noise=0.0
 test_data_ratio = 0.5
 
 # Generate data
-data_array = pg.generate(pg.DatasetType.ClassifyCircleData, data_noise)
-#data_array = pg.generate(pg.DatasetType.ClassifyXORData, data_noise)
-#data_array = pg.generate(pg.DatasetType.ClassifyTwoGaussData, data_noise)
-#data_array = pg.generate(pg.DatasetType.ClassifySpiralData, data_noise)
-#data_array = pg.generate(pg.DatasetType.RegressPlane, data_noise)
-#data_array = pg.generate(pg.DatasetType.RegressGaussian, data_noise)
+data_array = pg.generate_data(pg.DatasetType.ClassifyCircleData, data_noise)
+#data_array = pg.generate_data(pg.DatasetType.ClassifyXORData, data_noise)
+#data_array = pg.generate_data(pg.DatasetType.ClassifyTwoGaussData, data_noise)
+#data_array = pg.generate_data(pg.DatasetType.ClassifySpiralData, data_noise)
+#data_array = pg.generate_data(pg.DatasetType.RegressPlane, data_noise)
+#data_array = pg.generate_data(pg.DatasetType.RegressGaussian, data_noise)
 
 # Divide the data for training and testing at a specified ratio (further, separate each data into Coordinate point data part and teacher label part)
-X_train, y_train, X_test, y_test = pg.split_train_test_x_data_label(data_array, test_size=test_data_ratio)
+X_train, y_train, X_test, y_test = pg.data(data_array, test_size=test_data_ratio)
 
 # Plot the data on the standard graph for Playground
 fig, ax = pg.plot_points_with_playground_style(X_train, y_train, X_test, y_test, figsize = (6, 6), dpi = 100)
@@ -119,8 +119,8 @@ print('pg.plot_sample', str(signature(pg.plot_sample)))
 print('pg.generate', str(signature(pg.generate)))
 # pg.generate (data_type, noise=0.0)
 
-print('pg.split_train_test_x_data_label', str(signature(pg.split_train_test_x_data_label)))
-# pg.split_train_test_x_data_label (data, test_size=0.5, label_num=1)
+print('pg.data', str(signature(pg.data)))
+# pg.data (data, test_size=0.5, label_num=1)
 
 print('pg.plot_points_with_playground_style', str(signature(pg.plot_points_with_playground_style)))
 # pg.plot_points_with_playground_style (X_train, y_train, X_test=None, y_test=None, figsize=(5, 5), dpi=100)
