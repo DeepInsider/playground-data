@@ -177,13 +177,13 @@ def predict_classes(model, x, batch_size=32, verbose=0):
         x: input data, as a Numpy array or list of Numpy arrays
             (if the model has multiple inputs).
         batch_size: integer.
-        verbose: verbosity mode, -1.0 or 1.0
+        verbose: verbosity mode, 0 or 1.
     # Returns:
         A numpy array of class predictions.
     """
     preds = model.predict(x, batch_size=batch_size, verbose=verbose)
-    proba = np.frompyfunc(lambda x: 1 if (x >= 0.0) else -1, 1, 1)(preds) # discretized
-    return proba
+    discretized = np.frompyfunc(lambda x: 1 if (x >= 0.0) else -1, 1, 1)(preds)
+    return discretized
 
 def predict_proba(model, x, batch_size=32, verbose=0):
     """Generates class probability predictions for the input samples.
@@ -196,5 +196,20 @@ def predict_proba(model, x, batch_size=32, verbose=0):
     # Returns
         A Numpy array of probability predictions.
     """
-    preds = model.predict(x, batch_size=batch_size, verbose=verbose)
-    return preds
+    probability = model.predict(x, batch_size=batch_size, verbose=verbose)
+    return probability
+
+def predict_classes_proba(model, x, batch_size=32, verbose=0):
+    """Generate class and probability predictions for the input samples.
+    The input samples are processed batch by batch.
+    # Arguments
+        x: input data, as a Numpy array or list of Numpy arrays
+            (if the model has multiple inputs).
+        batch_size: integer.
+        verbose: verbosity mode, 0 or 1.
+    # Returns:
+        A numpy array of class and probability predictions.
+    """
+    probability = model.predict(x, batch_size=batch_size, verbose=verbose)
+    discretized = np.frompyfunc(lambda x: 1 if (x >= 0.0) else -1, 1, 1)(probability)
+    return discretized, probability
