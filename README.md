@@ -71,7 +71,7 @@ fig, ax = pg.plot_sample(pg.DatasetType.ClassifyCircleData)
 print('Basic code for generating and graphing data')
 
 data_noise=0.0
-test_data_ratio = 0.5
+validation_data_ratio = 0.5
 
 # Generate data
 data_array = pg.generate_data(pg.DatasetType.ClassifyCircleData, data_noise)
@@ -81,16 +81,16 @@ data_array = pg.generate_data(pg.DatasetType.ClassifyCircleData, data_noise)
 #data_array = pg.generate_data(pg.DatasetType.RegressPlane, data_noise)
 #data_array = pg.generate_data(pg.DatasetType.RegressGaussian, data_noise)
 
-# Divide the data for training and testing at a specified ratio (further, separate each data into Coordinate point data part and teacher label part)
-X_train, y_train, X_test, y_test = pg.data(data_array, test_size=test_data_ratio)
+# Divide the data for training and validating at a specified ratio (further, separate each data into Coordinate point data part and teacher label part)
+X_train, y_train, X_valid, y_valid = pg.data(data_array, validation_size=validation_data_ratio)
 
 # Plot the data on the standard graph for Playground
-fig, ax = pg.plot_points_with_playground_style(X_train, y_train, X_test, y_test, figsize = (6, 6), dpi = 100)
+fig, ax = pg.plot_points_with_playground_style(X_train, y_train, X_valid, y_valid, figsize = (6, 6), dpi = 100)
 
 # # get figure + axes of matplotlib graph and plot the data points
 # fig = pg.get_playground_figure(enable_colorbar=True)
 # ax = pg.get_playground_axes(fig)
-# pg.plot_points(ax, X_train, y_train, X_test, y_test)
+# pg.plot_points(ax, X_train, y_train, X_valid, y_valid)
 # # These 3 lines equal to `plot_points_with_playground_style` function
 
 # draw the decision boundary of X1 input (feature)
@@ -114,16 +114,16 @@ except ImportError:
     from funcsigs import signature
 
 print('pg.plot_sample', str(signature(pg.plot_sample)))
-# pg.plot_sample (data_type, noise=0.0, test_size=0.5, visualize_test_data=False, figsize=(5, 5), dpi=100, node_id=None, discretize=False)
+# pg.plot_sample (data_type, noise=0.0, validation_size=0.5, visualize_validation_data=False, figsize=(5, 5), dpi=100, node_id=None, discretize=False)
 
 print('pg.generate', str(signature(pg.generate)))
 # pg.generate (data_type, noise=0.0)
 
 print('pg.data', str(signature(pg.data)))
-# pg.data (data, test_size=0.5, label_num=1)
+# pg.data (data, validation_size=0.5, label_num=1)
 
 print('pg.plot_points_with_playground_style', str(signature(pg.plot_points_with_playground_style)))
-# pg.plot_points_with_playground_style (X_train, y_train, X_test=None, y_test=None, figsize=(5, 5), dpi=100)
+# pg.plot_points_with_playground_style (X_train, y_train, X_valid=None, y_valid=None, figsize=(5, 5), dpi=100)
 
 print('pg.get_playground_figure', str(signature(pg.get_playground_figure)))
 # pg.get_playground_figure (enable_colorbar=False)
@@ -132,7 +132,7 @@ print('pg.get_playground_axes', str(signature(pg.get_playground_axes)))
 # pg.get_playground_axes (fig)
 
 print('pg.plot_points', str(signature(pg.plot_points)))
-# pg.plot_points (ax, X_train, y_train, X_test=None, y_test=None)
+# pg.plot_points (ax, X_train, y_train, X_valid=None, y_valid=None)
 
 print('pg.draw_decision_boundary', str(signature(pg.draw_decision_boundary)))
 # pg.draw_decision_boundary (fig, ax, node_id='x', discretize=False, enable_colorbar=True)

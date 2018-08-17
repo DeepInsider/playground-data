@@ -30,7 +30,14 @@ TICKS_MIDDLE = 6
 TICKS_VALUE = [-1, 0, 1]
 
 
-def split_data(data, test_size = 0.5, label_num = 1): #  -> (list, list, list, list)
+def split_data(data, validation_size = 0.5, label_num = 1):
+    '''
+    Split data int training and validation data. And Each data will be split into input data and teacher labels.
+    :param data:
+    :param validation_size:
+    :param label_num:
+    :return: (X_train, y_train, X_valid, y_valid)
+    '''
 
     len_data = len(data)
     if len_data == 0:
@@ -42,7 +49,7 @@ def split_data(data, test_size = 0.5, label_num = 1): #  -> (list, list, list, l
     # X = mat[:,:-(label_num)] # data
     # y = mat[:,-(label_num)]  # label
     # from sklearn.model_selection import train_test_split
-    # X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=test_size)
+    # X_train, X_valid, y_train, y_valid = train_test_split(X, y, test_size=validation_size)
 
     # But, because this class doesn't use scikit-learn.
     np.random.shuffle(mat)
@@ -50,15 +57,15 @@ def split_data(data, test_size = 0.5, label_num = 1): #  -> (list, list, list, l
     X = mat[:, :-(label_num)]  # data
     y = mat[:, -(label_num)]   # label
 
-    split_point = int(len(mat) * (1.0 - test_size))
+    split_point = int(len(mat) * (1.0 - validation_size))
     X_train = X[0:split_point, :] # train data
     y_train = y[0:split_point]    # train label
-    X_test = X[split_point:, :]   # test data
-    y_test = y[split_point:]      # test label
+    X_valid = X[split_point:, :]   # validation data
+    y_valid = y[split_point:]      # validation label
 
     if label_num == 1:
         y_train = np.reshape(y_train, [len(y_train), 1])
-        y_test = np.reshape(y_test, [len(y_test), 1])
+        y_valid = np.reshape(y_valid, [len(y_valid), 1])
 
     # To Pandas example:
     # import numpy as np
@@ -70,7 +77,7 @@ def split_data(data, test_size = 0.5, label_num = 1): #  -> (list, list, list, l
     # df_y_train.columns = ['label']
     # print(df_y_train)
 
-    return X_train, y_train, X_test, y_test
+    return X_train, y_train, X_valid, y_valid
 
 
 def get_playground_figure(enable_colorbar=False):
@@ -102,22 +109,22 @@ def get_playground_axes(fig):
     return ax
 
 
-def plot_points(ax, X_train, y_train, X_test=None, y_test=None):
+def plot_points(ax, X_train, y_train, X_valid=None, y_valid=None):
 
     HeatMap.updateTrainPoints(ax, X_train, y_train)
 
-    if all([X_test is not None, y_test is not None]):
-        HeatMap.updateTestPoints(ax, X_test, y_test)
+    if all([X_valid is not None, y_valid is not None]):
+        HeatMap.updateValidationPoints(ax, X_valid, y_valid)
 
 
-def plot_points_with_playground_style(X_train, y_train, X_test=None, y_test=None, figsize=(5, 5), dpi=100):
+def plot_points_with_playground_style(X_train, y_train, X_valid=None, y_valid=None, figsize=(5, 5), dpi=100):
     """
     if width 5 inches x height 5 inches x dpi 100, = 500 x 500 dots figure will be created.
 
     :param X_train: train data
     :param y_train: grain label
-    :param X_test: test data
-    :param y_test: test label
+    :param X_valid: validation data
+    :param y_valid: validation label
     :param figsize: width inches (default: 5) x height (default: 5) inches
     :param dpi: dpi (default: 100)
     :return: a Figure object of matplotlib,  and the axes (Coordinate axis)
@@ -127,7 +134,7 @@ def plot_points_with_playground_style(X_train, y_train, X_test=None, y_test=None
     # get the axes (Coordinate axis) designed for NeuralNetwork Playground of Deep Insider.
     ax = get_playground_axes(fig)
 
-    plot_points(ax, X_train, y_train, X_test, y_test)
+    plot_points(ax, X_train, y_train, X_valid, y_valid)
 
     return fig, ax
 
@@ -154,16 +161,16 @@ def draw_decision_boundary(fig, ax, node_id=InputType.X1, discretize=False, enab
     return im
 
 
-def plot_sample(data_type, noise=0.0, test_size=0.5, visualize_test_data=False, figsize=(5, 5), dpi=100, node_id=None, discretize=False):
+def plot_sample(data_type, noise=0.0, validation_size=0.5, visualize_validation_data=False, figsize=(5, 5), dpi=100, node_id=None, discretize=False):
 
     data_array = generate_data(data_type, noise)
     if data_array is None:
         return None, None
 
     mat = np.array(data_array)
-    X_train, y_train, X_test, y_test = split_data(mat, test_size=test_size)
+    X_train, y_train, X_valid, y_valid = split_data(mat, validation_size=validation_size)
 
-    fig, ax = plot_points_with_playground_style(X_train, y_train, X_test if (visualize_test_data) else None, y_test if (visualize_test_data) else None)
+    fig, ax = plot_points_with_playground_style(X_train, y_train, X_valid if (visualize_validation_data) else None, y_valid if (visualize_validation_data) else None, figsize=figsize, dpi=dpi)
 
     if node_id is not None:
         draw_decision_boundary(fig, ax, node_id=node_id, discretize=discretize)

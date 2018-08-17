@@ -61,12 +61,12 @@ class HeatMap:
 
     @staticmethod
     def updateValidationPoints(ax, X_valid, y_valid):
-        HeatMap.updateCircles(ax, X_valid, y_valid, "#FF5555")
+        HeatMap.updateCircles(ax, X_valid, y_valid, "#555555")
 
 
     @staticmethod
-    def updateTestPoints(ax, X_test, y_test):
-        HeatMap.updateCircles(ax, X_test, y_test, "#555555")
+    def updateTestPoints(ax, X_valid, y_valid):
+        HeatMap.updateCircles(ax, X_valid, y_valid, "#FF5555")
 
 
     @staticmethod
