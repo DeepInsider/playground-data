@@ -14,7 +14,9 @@ from plygdata.datahelper import\
     plot_points, \
     plot_points_with_playground_style,\
     draw_decision_boundary,\
-    plot_sample
+    plot_sample, \
+    predict_classes, \
+    predict_proba
 from plygdata.dataset import generate
 from plygdata.playground import Player
 from plygdata.state import DatasetType, InputType
