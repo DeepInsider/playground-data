@@ -139,6 +139,11 @@ print('pg.draw_decision_boundary', str(signature(pg.draw_decision_boundary)))
 
 ```
 
+Sample Web app
+-------------------------------------------------------------------
+
+- [Sample Web app of Neural Network Playground-DATA using TensorFlow.js](https://deepinsider.github.io/playground-data/)
+
 License
 -------------------------------------------------------------------
 
