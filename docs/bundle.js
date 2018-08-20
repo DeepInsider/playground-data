@@ -229,7 +229,7 @@ let updateTableHead = function (isClassificaion) {
 };
 
 let updateDataTable = function (dataset, isClassificaion) {
-    console.log(dataset);
+    //console.log(dataset);
 
     var tbody = d3.select("#data-table-body");
 

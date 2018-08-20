@@ -43,7 +43,7 @@ let getTensor2dData = function (testPoints) {
   var testTensor2d = tf.tidy(() => {
     return tf.tensor2d(testPoints);
   });
-  testTensor2d.print();
+  //testTensor2d.print();
 
   return testTensor2d;
 }
@@ -115,7 +115,7 @@ let drawDecisionBoundary = async function (model, discretize) {
 }
 
 let predictFromModel = async function (model, testData) {
-  console.log('学習済みモデルで、テストデータの分類と確度を予測：');
+  console.log('学習済みモデルで、テストデータから予測：');
 
   var tensorProbas = model.predict(testData, {
     batchSize: 32,
@@ -125,12 +125,12 @@ let predictFromModel = async function (model, testData) {
   // データをTensor2d型からJavaScriptのArray型に変換
   var dataProbas = tensorProbas.dataSync();
 
-  // 全データの分類と確度をコンソール出力
-  for (var i = 0; i < dataProbas.length; i++) {
-    var dataClass = (dataProbas[i] >= 0.0) ? 1 : -1;
-    console.log('[', i, '] 分類=', dataClass);
-    console.log('[', i, '] 確度=', dataProbas[i]);
-  }
+  // // 全データの分類と確度をコンソール出力
+  // for (var i = 0; i < dataProbas.length; i++) {
+  //   var dataClass = (dataProbas[i] >= 0.0) ? 1 : -1;
+  //   console.log('[', i, '] 分類=', dataClass);
+  //   console.log('[', i, '] 確度=', dataProbas[i]);
+  // }
 
   // 学習済みモデルで予測
   var predictTest = model.predict(testData);
