@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>ニューラルネットワーク Playground-DATA の サンプル Web アプリ（TensorFlow.js 活用）</title>
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700" type="text/css">
+	<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+	<link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.indigo-blue.min.css">
+	<link rel="stylesheet" href="/bundle.css">
+</head>
+<body>
+
+<!-- GitHub link -->
+<a class="github-link" href="https://github.com/DeepInsider/playground-data/tree/master/docs" title="Source on GitHub">
+	<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 60.5 60.5" width="60" height="60">
+		<polygon class="bg" points="60.5,60.5 0,0 60.5,0 "></polygon>
+		<path class="icon" d="M43.1,5.8c-6.6,0-12,5.4-12,12c0,5.3,3.4,9.8,8.2,11.4c0.6,0.1,0.8-0.3,0.8-0.6c0-0.3,0-1,0-2c-3.3,0.7-4-1.6-4-1.6c-0.5-1.4-1.3-1.8-1.3-1.8c-1.1-0.7,0.1-0.7,0.1-0.7c1.2,0.1,1.8,1.2,1.8,1.2c1.1,1.8,2.8,1.3,3.5,1c0.1-0.8,0.4-1.3,0.8-1.6c-2.7-0.3-5.5-1.3-5.5-5.9c0-1.3,0.5-2.4,1.2-3.2c-0.1-0.3-0.5-1.5,0.1-3.2c0,0,1-0.3,3.3,1.2c1-0.3,2-0.4,3-0.4c1,0,2,0.1,3,0.4c2.3-1.6,3.3-1.2,3.3-1.2c0.7,1.7,0.2,2.9,0.1,3.2c0.8,0.8,1.2,1.9,1.2,3.2c0,4.6-2.8,5.6-5.5,5.9c0.4,0.4,0.8,1.1,0.8,2.2c0,1.6,0,2.9,0,3.3c0,0.3,0.2,0.7,0.8,0.6c4.8-1.6,8.2-6.1,8.2-11.4C55.1,11.2,49.7,5.8,43.1,5.8z"></path>
+	</svg>
+</a>
+<!-- Header -->
+
+<div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
+
+<header class="mdl-layout__header">
+	<div class="mdl-layout__header-row">
+			<i class="material-icons">web</i>
+		<h1 class="mdl-layout-title">ニューラルネットワーク Playground-DATA の サンプル Web アプリ（TensorFlow.js 活用）</h1>
+	</div>
+</header>
+
+<main class="mdl-layout__content">
+
+	<div class="mdl-grid">
+
+		<div class="mdl-cell mdl-cell--6-col">
+			<div class="mdl-cell mdl-cell--12-col cell-align-right">
+				<button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect" id="generate-test-data">点座標を自動生成してテスト</button>
+			</div>
+
+			<table class="mdl-data-table">
+				<thead id="data-table-head">
+					<tr>
+						<th>X座標</th><th>Y座標</th><th>分類</th><th>確度</th>
+					</tr>
+				</thead>
+				<tbody id="data-table-body">
+					<tr>
+						<td>-0.000</td><td>-0.000</td><td>0</td><td>-0.000</td>
+					</tr>
+				</tbody>
+			</table>
+
+			<div class="mdl-cell mdl-cell--12-col cell-align-right">
+				<div class="mdl-spinner mdl-js-spinner is-active"></div>
+			</div>
+		</div>
+
+		<div class="mdl-cell mdl-cell--6-col">
+			<div class="mdl-cell mdl-cell--12-col">
+				<p>ボタンをクリックするか、<br>グラフ上の任意の場所をクリックしてください。</p>
+			</div>
+
+			<div id="heatmap"></div>
+
+			<div class="colorbar">
+
+				<p class="colorbar-header">
+					色でデータの値を表現しています。
+				</p>
+
+				<!-- グラデーション カラー スケール -->
+				<svg width="260" height="30" id="color-map">
+					<defs>
+						<linearGradient id="gradient" x1="0%" y1="100%" x2="100%" y2="100%">
+						<stop offset="0%" stop-color="#f59322" stop-opacity="1"></stop>
+						<stop offset="50%" stop-color="#e8eaeb" stop-opacity="1"></stop>
+						<stop offset="100%" stop-color="#0877bd" stop-opacity="1"></stop>
+						</linearGradient>
+					</defs>
+					<g class="core" transform="translate(3, 0)">
+						<rect width="254" height="10" style="fill: url('#gradient');"></rect>
+					</g>
+				</svg>
+
+				<p class="colorbar-footer">
+					<b>分類：</b><span style="color: #f59322"> -1（オレンジ色）</span>か、<span style="color: #0877bd">1（青色）</span><br>
+					<b>回帰：</b> <span style="color: #f59322">-1.0</span> ～ <span style="color: #0877bd">1.0</span> の数値
+				</p>
+
+			</div>
+		</div>
+
+	</div>
+
+</main>
+
+<footer>
+	<div class="footer-body">
+		<div class="footer-logo">Deep Insider</div>
+		<div class="footer-links"><a href="https://github.com/DeepInsider/playground-data/tree/master/docs">Source on GitHub</a> ( Apache License 2.0 )</div>
+	</div>
+</footer>
+
+</div>
+
+<script defer src="https://code.getmdl.io/1.3.0/material.min.js"></script>
+<script src="https://d3js.org/d3.v5.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@0.12.5"></script><!-- /tfjs@latest とする方がよいが、バージョンで挙動が変わるのを回避するため固定。 -->
+<script src="/bundle.js"></script>
+<script src="/main.js"></script>
+</body>
+</html>
+
+

@@ -1,0 +1,123 @@
+g.test circle {
+	stroke-width: 1;
+	stroke: #550000;
+	stroke-opacity: 0.6;
+	fill-opacity: 0.9;
+}
+
+svg text {
+	vertical-align: baseline;
+}
+
+canvas {
+	display: block;
+}
+
+#heatmap {
+	margin-top: 10px;
+}
+
+#heatmap .tick line {
+	stroke: #ddd;
+}
+
+#heatmap .tick text {
+	fill: #bbb;
+	vertical-align: baseline;
+}
+
+#heatmap .tick:nth-child(8) text {
+	fill: #333;
+}
+
+#heatmap .tick:nth-child(8) line {
+	stroke: #999;
+}
+
+.axis line {
+	fill: none;
+	stroke: #777;
+	shape-rendering: crispEdges;
+}
+
+.axis text {
+	fill: #777;
+	font-size: 10px;
+}
+
+.axis path {
+	display: none;
+}
+
+.colorbar-header {
+	margin-bottom: 5px;
+}
+
+.colorbar-footer {
+	margin-top: 10px;
+}
+
+.github-link {
+	width: 60px;
+	height: 60px;
+	position: absolute;
+	display: block;
+	top: 0;
+	right: 0;
+	z-index: 1000;
+}
+
+.github-link .bg {
+	fill: #fff;
+	fill-opacity: 0.2;
+}
+
+.mdl-layout__header-row {
+	padding: 0;
+	margin: 0 auto 0 auto;
+}
+
+.mdl-layout-title {
+	margin-left: 10px;
+}
+
+.mdl-data-table {
+	margin-left: auto;
+	width: 300px;
+}
+
+.mdl-data-table td {
+	width: 25%;
+}
+
+.cell-align-right {
+	text-align: right;
+}
+
+footer {
+	background-color: #f7f7f7;
+	border-top: solid 1px #eee;
+	color: #ccc;
+	font-weight: 300;
+	padding: 40px 0;
+	height: 30px;
+}
+
+.footer-body {
+	width: 250px;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+.footer-logo {
+	font-size: 150%;
+	color: #999;
+}
+
+.footer-links {
+	float: right;
+	font-size: 80%;
+	height: 30px;
+	line-height: 30px;
+	margin-left: 20px;
+}
