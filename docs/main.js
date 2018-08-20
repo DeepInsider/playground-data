@@ -16,7 +16,7 @@
 
 "use strict";
 
-const MODEL_FILE_NAME = '/model_dnn.json';
+const MODEL_FILE_NAME = './model_dnn.json';
 let isClassificaion = true;                             // 分類の場合は true 、回帰の場合は false 。
 let discretizeBoundaryColor = false;             // 決定協会の色を離散化する（＝1か-1にする）かどうか
 let discretizePointsColor = isClassificaion;     // 点の色を離散化する（＝1か-1にする）かどうか
