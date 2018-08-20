@@ -81,6 +81,15 @@ canvas {
 	margin-left: 10px;
 }
 
+.mdl-layout__tab-bar {
+	height: auto;
+	padding: 0;
+	margin: 0 auto 0 auto;
+	width: fit-content;
+}
+
+
+
 .mdl-data-table {
 	margin-left: auto;
 	width: 300px;
