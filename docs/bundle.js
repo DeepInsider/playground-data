@@ -144,15 +144,17 @@ let getDecisionBoundary = async function (callback) {
     var boundary = new Array(DENSITY);
     for (var i = 0; i < DENSITY; i++) {
         boundary[i] = new Array(DENSITY);
-        var temp2d = new Array(DENSITY);
+
+        var arrayInputPoints = new Array(DENSITY);
         for (var j = 0; j < DENSITY; j++) {
             var x = xScaleBoundary(i);
             var y = yScaleBoundary(j);
-            temp2d[j] = [x, y];
+            arrayInputPoints[j] = [x, y];
         }
-        var output2d = callback(temp2d); // 10000件まとめて処理できなかったので、100件ずつにした
+        var arrayOutputPoints = callback(arrayInputPoints); // 10000件まとめて処理できなかったので、100件ずつにした
+        
         for (var k = 0; k < DENSITY; k++) {
-            boundary[i][k] = output2d[k];
+            boundary[i][k] = arrayOutputPoints[k];
         }
     }
     return boundary;

@@ -37,26 +37,25 @@ tf.tidy のスコープ内の処理は、dispose を呼び出す必要があり�
 機械学習モデルのライフサイクル全体の最後に、テンソルオブジェクトが削除されます。明示的に早く削除したい場合は、dipsose を呼んでください。
 */
 
+let getTensor2dData = function (arrayData) {
 
-let getTensor2dData = function (testPoints) {
-
-  var testTensor2d = tf.tidy(() => {
-    return tf.tensor2d(testPoints);
+  var tensorData = tf.tidy(() => {
+    return tf.tensor2d(arrayData);
   });
-  //testTensor2d.print();
+  //tensorData.print();
 
-  return testTensor2d;
+  return tensorData;
 }
 
 
 let generateTestData = function (numSamples) {
   console.log('テストデータの生成:');
 
-  var testPoints = generateTestPoints(numSamples);
+  var arrayPoints = generateTestPoints(numSamples);
 
-  var testData = getTensor2dData(testPoints);
+  var tensorPoints = getTensor2dData(arrayPoints);
 
-  return testData;
+  return tensorPoints;
 }
 
 let loadLearnedModel = async function (filepath) {
@@ -86,21 +85,19 @@ let drawDecisionBoundary = async function (model, discretize) {
     //console.log('start...')
     showSpinner()
 
-    var boundary = await getDecisionBoundary(function (temp2d) {
-      //console.log(temp2d);
+    var boundary = await getDecisionBoundary(function (arrayInput) {
+      //console.log(arrayInput);
 
-      var boundaryPoint2d = tf.tidy(() => {
-        return tf.tensor2d(temp2d);
-      });
-      //boundaryPoint2d.print();
+      var tensorInput = getTensor2dData(arrayInput);
+      //tensorInput.print();
 
-      var boundaryPredict2d = model.predict(boundaryPoint2d);
-      //boundaryPredict2d.print();
+      var tensorOutput = model.predict(tensorInput);
+      //tensorOutput.print();
 
-      var predictData2d = boundaryPredict2d.dataSync();
-      //console.log(predictData2d);
+      var arrayOutput = tensorOutput.dataSync();
+      //console.log(arrayOutpuPoints);
 
-      return predictData2d;
+      return arrayOutput;
     });
 
     //console.log('finish.')
@@ -114,112 +111,65 @@ let drawDecisionBoundary = async function (model, discretize) {
   updateBackground(boundary, discretize);
 }
 
-let predictFromModel = async function (model, testData) {
+let predictFromModel = async function (model, tensorInput) {
   console.log('学習済みモデルで、テストデータから予測：');
 
-  var tensorProbas = model.predict(testData, {
+  // データをTensor2d型からJavaScriptのArray型に変換
+  var arrayInput = tensorInput.dataSync(); // なぜか1次元配列にしてしまう...
+  //console.log(arrayInput)
+
+  // 学習済みモデルで予測
+  var tensorOutput = model.predict(tensorInput, {
     batchSize: 32,
     verbose: false
   });
 
   // データをTensor2d型からJavaScriptのArray型に変換
-  var dataProbas = tensorProbas.dataSync();
-
-  // // 全データの分類と確度をコンソール出力
-  // for (var i = 0; i < dataProbas.length; i++) {
-  //   var dataClass = (dataProbas[i] >= 0.0) ? 1 : -1;
-  //   console.log('[', i, '] 分類=', dataClass);
-  //   console.log('[', i, '] 確度=', dataProbas[i]);
-  // }
-
-  // 学習済みモデルで予測
-  var predictTest = model.predict(testData);
-
-  // データをTensor2d型からJavaScriptのArray型に変換
-  var arrayPredictTest = predictTest.dataSync();
-  //console.log(arrayPredictTest);
-
-  // データをTensor2d型からJavaScriptのArray型に変換
-  var arrayPointTemp = testData.dataSync(); // なぜか1次元配列にしてしまう...
-  //console.log(arrayPointTemp)
+  var arrayOutput = tensorOutput.dataSync();
+  //console.log(arrayOutput);
 
   // テストデータの座標点と予測結果を配列にまとめる
-  var arrayTestData = [];
-  for (var i = 0; i < arrayPointTemp.length; i += 2) {
-    arrayTestData.push({
-      x: arrayPointTemp[i],
-      y: arrayPointTemp[i + 1],
-      label: (arrayPredictTest[i / 2] >= 0.0) ? 1 : -1,
-      pred: arrayPredictTest[i / 2]
+  var dictArrayOutput = [];
+  for (var i = 0; i < arrayInput.length; i += 2) {
+    dictArrayOutput.push({
+      x: arrayInput[i],
+      y: arrayInput[i + 1],
+      label: (arrayOutput[i / 2] >= 0.0) ? 1 : -1,
+      pred: arrayOutput[i / 2]
     });
   }
-  //console.log(arrayTestData)
+  //console.log(dictArrayOutput)
 
-  return arrayTestData;
+  return dictArrayOutput;
 }
 
 let renderTableHead = async function (enableClass) {
   console.log("表の見出しを描画更新：");
 
-  updateTableHead( enableClass);
+  updateTableHead(enableClass);
 }
 
-let renderDataTable = async function (dataset, enableClass) {
+let renderDataTable = async function (dictArrayOutput, enableClass) {
   console.log("表のデータを描画更新：");
 
-  updateDataTable(dataset, enableClass);
+  updateDataTable(dictArrayOutput, enableClass);
 }
 
-let plotCoordinatePoints = async function (arrayTestData, discretize) {
+let plotCoordinatePoints = async function (dictArrayOutput, discretize) {
   console.log("予測結果を色付きの点としてプロット：");
 
-  updatePoints(arrayTestData, discretize);
+  updatePoints(dictArrayOutput, discretize);
 }
 
-
-// ----------------------------------------------------
-// メイン処理
-
-let updateUI = async function (testData) {
-
-    predictFromModel(savedModel, testData).then(arrayTestData => {
-
-      renderTableHead(isClassificaion);
-
-      renderDataTable(arrayTestData, isClassificaion);
-
-      plotCoordinatePoints(arrayTestData, discretizePointsColor);
-
-    });
-}
-
-let mainInit = async function () {
-
-  var testData = generateTestData(NUM_TEST_DATA);
-
-  loadLearnedModel(MODEL_FILE_NAME).then(model => {
-
-    savedModel = model;
-
-    drawDecisionBoundary(model, discretizeBoundaryColor).then(() => {
-
-      updateUI(testData);
-
-    });
-  });
-
-}
-
-mainInit();
 
 // ----------------------------------------------------
 // ボタンクリック時の処理
 
 onButtonClickCallback = function() {
 
-    var testData = generateTestData(NUM_TEST_DATA);
+  var tensorInput = generateTestData(NUM_TEST_DATA);
 
-    updateUI(testData);
+  updateUI(tensorInput);
 }
 
 
@@ -228,7 +178,44 @@ onButtonClickCallback = function() {
 
 onCoordsClickCallback = function (coords) {
 
-  var testData = getTensor2dData([coords]);
+  var tensorInput = getTensor2dData([coords]);
 
-  updateUI(testData);
+  updateUI(tensorInput);
 }
+
+
+// ----------------------------------------------------
+// メイン処理
+
+let updateUI = async function (tensorInput) {
+
+  predictFromModel(savedModel, tensorInput).then(dictArrayOutput => {
+
+    renderTableHead(isClassificaion);
+
+    renderDataTable(dictArrayOutput, isClassificaion);
+
+    plotCoordinatePoints(dictArrayOutput, discretizePointsColor);
+
+  });
+
+}
+
+let mainInit = async function () {
+
+  var tensorInput = generateTestData(NUM_TEST_DATA);
+
+  loadLearnedModel(MODEL_FILE_NAME).then(model => {
+
+    savedModel = model;
+
+    drawDecisionBoundary(model, discretizeBoundaryColor).then(() => {
+
+      updateUI(tensorInput);
+
+    });
+  });
+
+}
+
+mainInit();
