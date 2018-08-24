@@ -1,5 +1,5 @@
 # ==============================================================================
-# Copyright 2018 Digital Advantage Inc. All Rights Reserved.
+# Copyright 2018 Digital Advantage Co., Ltd. All Rights Reserved.
 #
 # This is a Python implementation of [tensorflow / playground (Deep playground) / dataset.ts](https://github.com/tensorflow/playground/blob/master/src/dataset.ts).
 #

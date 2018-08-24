@@ -87,7 +87,7 @@ setup(
 
     # This should be your name or the name of the organization which owns the
     # project.
-    author='Digital Advantage Inc.',  # Optional
+    author='Digital Advantage Co., Ltd.',  # Optional
 
     # This should be a valid email address corresponding to the author listed
     # above.
