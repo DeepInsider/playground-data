@@ -214,7 +214,7 @@ let updatePoints = function (points, discretize) {
 let updateTableHead = function (isClassificaion) {
     var names = [];
     names.push(isClassificaion
-        ? {x: "X座標", y: "Y座標", label: "分類", pred: "確度" }
+        ? {x: "X座標", y: "Y座標", label: "分類", pred: "予測" }
         : {x: "X座標", y: "Y座標", label: "回帰", pred: "予測" }
     );
     //console.log(names);
