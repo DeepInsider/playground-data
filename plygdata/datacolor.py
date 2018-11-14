@@ -84,9 +84,7 @@ class DataColor:
          30 = index_last
          15.5 = point_half
         """
-        int_label = int(math.floor(15.5 * (label + 1)))
-        index = int(max(0, min(30, int_label)))
-        return _colors[index]
+        return _colors[max(0, min(30, int(math.floor(15.5 * (label + 1)))))]
 
     @staticmethod
     def get_colormap(x_domain=[-1.0, 1.0]):
