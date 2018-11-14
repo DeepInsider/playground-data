@@ -82,7 +82,7 @@ data_array = pg.generate_data(pg.DatasetType.ClassifyCircleData, data_noise)
 #data_array = pg.generate_data(pg.DatasetType.RegressGaussian, data_noise)
 
 # Divide the data for training and validating at a specified ratio (further, separate each data into Coordinate point data part and teacher label part)
-X_train, y_train, X_valid, y_valid = pg.data(data_array, validation_size=validation_data_ratio)
+X_train, y_train, X_valid, y_valid = pg.split_data(data_array, validation_size=validation_data_ratio)
 
 # Plot the data on the standard graph for Playground
 fig, ax = pg.plot_points_with_playground_style(X_train, y_train, X_valid, y_valid, figsize = (6, 6), dpi = 100)
@@ -119,8 +119,8 @@ print('pg.plot_sample', str(signature(pg.plot_sample)))
 print('pg.generate', str(signature(pg.generate)))
 # pg.generate (data_type, noise=0.0)
 
-print('pg.data', str(signature(pg.data)))
-# pg.data (data, validation_size=0.5, label_num=1)
+print('pg.split_data', str(signature(pg.data)))
+# pg.split_data (data, validation_size=0.5, label_num=1)
 
 print('pg.plot_points_with_playground_style', str(signature(pg.plot_points_with_playground_style)))
 # pg.plot_points_with_playground_style (X_train, y_train, X_valid=None, y_valid=None, figsize=(5, 5), dpi=100)
