@@ -1,5 +1,6 @@
-# this file is *not* meant to cover or endorse the use of travis, but rather to
-# help confirm pull requests to this project.
+# this file is *not* meant to cover or endorse the use of travis, 
+# but rather to help confirm pull requests to this project.
+# Specifying Python versions: https://docs.travis-ci.com/user/languages/python/
 
 language: python
 
@@ -7,10 +8,11 @@ python:
   - "2.7"
   - "3.4"
   - "3.5"
-  - "3.5-dev"  # 3.5 development branch
-  - "3.6"
-  - "3.6-dev"  # 3.6 development branch
+  - "3.6"      # current default Python on Travis CI
+  - "3.7"
   - "3.7-dev"  # 3.7 development branch
+  - "3.8-dev"  # 3.8 development branch
+  - "nightly"  # nightly build
 
 # command to install dependencies
 install:
