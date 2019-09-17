@@ -165,14 +165,14 @@ def draw_decision_boundary(fig, ax, node_id=InputType.X1, discretize=False, enab
     return im
 
 
-def plot_sample(data_type, noise=0.0, validation_size=0.5, visualize_validation_data=False, figsize=(5, 5), dpi=100, node_id=None, discretize=False):
+def plot_sample(data_type, noise=0.0, validation_size=0.5, visualize_validation_data=False, figsize=(5, 5), dpi=100, node_id=None, discretize=False, training_size = -1.0):
 
     data_array = generate_data(data_type, noise)
     if data_array is None:
         return None, None
 
     mat = np.array(data_array)
-    X_train, y_train, X_valid, y_valid = split_data(mat, validation_size=validation_size)
+    X_train, y_train, X_valid, y_valid = split_data(mat, validation_size=validation_size, training_size=training_size)
 
     fig, ax = plot_points_with_playground_style(X_train, y_train, X_valid if (visualize_validation_data) else None, y_valid if (visualize_validation_data) else None, figsize=figsize, dpi=dpi)
 
