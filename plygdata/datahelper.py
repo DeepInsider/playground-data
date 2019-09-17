@@ -30,12 +30,13 @@ TICKS_MIDDLE = 6
 TICKS_VALUE = [-1, 0, 1]
 
 
-def split_data(data, validation_size = 0.5, label_num = 1):
+def split_data(data, validation_size = 0.5, label_num = 1, training_size = -1.0):
     '''
     Split data int training and validation data. And Each data will be split into input data and teacher labels.
     :param data:
     :param validation_size:
     :param label_num:
+    :param training_size:
     :return: (X_train, y_train, X_valid, y_valid)
     '''
 
@@ -56,6 +57,9 @@ def split_data(data, validation_size = 0.5, label_num = 1):
 
     X = mat[:, :-(label_num)]  # data
     y = mat[:, -(label_num)]   # label
+
+    if training_size >= 0.0 and training_size <= 1.0:
+        validation_size = 1.0 - training_size
 
     split_point = int(len(mat) * (1.0 - validation_size))
     X_train = X[0:split_point, :] # train data

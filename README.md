@@ -83,6 +83,7 @@ data_array = pg.generate_data(pg.DatasetType.ClassifyCircleData, data_noise)
 
 # Divide the data for training and validating at a specified ratio (further, separate each data into Coordinate point data part and teacher label part)
 X_train, y_train, X_valid, y_valid = pg.split_data(data_array, validation_size=validation_data_ratio)
+# You can use training_size instead of validation_size. training_size takes precedence over validation_size.
 
 # Plot the data on the standard graph for Playground
 fig, ax = pg.plot_points_with_playground_style(X_train, y_train, X_valid, y_valid, figsize = (6, 6), dpi = 100)
