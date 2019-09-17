@@ -61,7 +61,7 @@ def split_data(data, validation_size = 0.5, label_num = 1, training_size = -1.0)
     if training_size >= 0.0 and training_size <= 1.0:
         validation_size = 1.0 - training_size
 
-    split_point = int(len(mat) * (1.0 - validation_size))
+    split_point = round(len(mat) * (1.0 - validation_size))
     X_train = X[0:split_point, :] # train data
     y_train = y[0:split_point]    # train label
     X_valid = X[split_point:, :]   # validation data
