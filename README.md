@@ -148,7 +148,7 @@ Sample Web app
 License
 -------------------------------------------------------------------
 
-Copyright 2018 Digital Advantage Co., Ltd. All Rights Reserved.
+Copyright 2018-2019 Digital Advantage Co., Ltd. All Rights Reserved.
 Licensed under the Apache License, Version 2.0.
 
 ### The licenses of using open-source code

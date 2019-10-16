@@ -1,5 +1,5 @@
 // ==============================================================================
-// Copyright 2018 Digital Advantage Co., Ltd. All Rights Reserved.
+// Copyright 2018-2019 Digital Advantage Co., Ltd. All Rights Reserved.
 //
 // This is a JavaScript implementation of the graph part of [tensorflow / playground (Deep playground)](https://github.com/tensorflow/playground).
 //
