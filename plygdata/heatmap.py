@@ -1,5 +1,5 @@
 # ==============================================================================
-# Copyright 2018 Digital Advantage Co., Ltd. All Rights Reserved.
+# Copyright 2018-2019 Digital Advantage Co., Ltd. All Rights Reserved.
 #
 # This is a Python implementation of [tensorflow / playground (Deep playground) / heatmap.ts](https://github.com/tensorflow/playground/blob/master/src/heatmap.ts).
 #
@@ -41,9 +41,12 @@ class HeatMap:
 
 
     @staticmethod
-    def updateBackground(ax, boundaries, node_id, discretize):
-        boundaries = Player.update_decision_boundary(boundaries, discretize)
-        boundary_of_node = boundaries[node_id]
+    def updateBackground(ax, boundaries, node_id, discretize, probability=None):
+        if probability is None:
+          boundaries = Player.update_decision_boundary(boundaries, discretize)
+          boundary_of_node = boundaries[node_id]
+        else:
+          boundary_of_node = Player.get_decision_boundary_of_node(probability, discretize)
         im = HeatMap.draw_decision_boundary_of_node(ax, boundary_of_node)
         return im
 

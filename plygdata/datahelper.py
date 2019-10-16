@@ -1,5 +1,5 @@
 # ==============================================================================
-# Copyright 2018 Digital Advantage Co., Ltd. All Rights Reserved.
+# Copyright 2018-2019 Digital Advantage Co., Ltd. All Rights Reserved.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -22,6 +22,7 @@ import numpy as np
 from plygdata.dataset import generate_data
 from plygdata.state import InputType
 from plygdata.heatmap import HeatMap
+from plygdata.playground import Player
 
 
 POINT_DOMAIN = [-6.0, 6.0]
@@ -30,7 +31,7 @@ TICKS_MIDDLE = 6
 TICKS_VALUE = [-1, 0, 1]
 
 
-def split_data(data, validation_size = 0.5, label_num = 1, training_size = -1.0):
+def split_data(data, validation_size=0.5, label_num=1, training_size=-1.0):
     '''
     Split data int training and validation data. And Each data will be split into input data and teacher labels.
     :param data:
@@ -155,17 +156,7 @@ def _add_colorbar_on_bottom(fig, ax, im):
     ax_cb.xaxis.set_ticks_position("bottom")
 
 
-def draw_decision_boundary(fig, ax, node_id=InputType.X1, discretize=False, enable_colorbar=True):
-
-    im = HeatMap.updateBackground(ax, None, node_id, discretize)
-
-    if enable_colorbar:
-        _add_colorbar_on_bottom(fig, ax, im)
-
-    return im
-
-
-def plot_sample(data_type, noise=0.0, validation_size=0.5, visualize_validation_data=False, figsize=(5, 5), dpi=100, node_id=None, discretize=False, training_size = -1.0):
+def plot_sample(data_type, noise=0.0, validation_size=0.5, visualize_validation_data=False, figsize=(5, 5), dpi=100, node_id=None, discretize=False, training_size=-1.0):
 
     data_array = generate_data(data_type, noise)
     if data_array is None:
@@ -181,46 +172,65 @@ def plot_sample(data_type, noise=0.0, validation_size=0.5, visualize_validation_
 
     return fig, ax
 
-def predict_classes(model, x, batch_size=32, verbose=0):
+
+def predict_classes(trained_model, x, batch_size=32, verbose=0):
     """Generate class predictions for the input samples.
     The input samples are processed batch by batch.
     # Arguments
         x: input data, as a Numpy array or list of Numpy arrays
-            (if the model has multiple inputs).
+            (if the trained_model has multiple inputs).
         batch_size: integer.
         verbose: verbosity mode, 0 or 1.
     # Returns:
         A numpy array of class predictions.
     """
-    preds = model.predict(x, batch_size=batch_size, verbose=verbose)
+    preds = trained_model.predict(x, batch_size=batch_size, verbose=verbose)
     discretized = np.frompyfunc(lambda x: 1 if (x >= 0.0) else -1, 1, 1)(preds)
     return discretized
 
-def predict_proba(model, x, batch_size=32, verbose=0):
+
+def predict_proba(trained_model, x, batch_size=32, verbose=0):
     """Generates class probability predictions for the input samples.
     The input samples are processed batch by batch.
     # Arguments
         x: input data, as a Numpy array or list of Numpy arrays
-            (if the model has multiple inputs).
+            (if the trained_model has multiple inputs).
         batch_size: integer.
         verbose: verbosity mode, 0 or 1.
     # Returns
         A Numpy array of probability predictions.
     """
-    probability = model.predict(x, batch_size=batch_size, verbose=verbose)
+    probability = trained_model.predict(x, batch_size=batch_size, verbose=verbose)
     return probability
 
-def predict_classes_proba(model, x, batch_size=32, verbose=0):
+
+def predict_classes_proba(trained_model, x, batch_size=32, verbose=0):
     """Generate class and probability predictions for the input samples.
     The input samples are processed batch by batch.
     # Arguments
         x: input data, as a Numpy array or list of Numpy arrays
-            (if the model has multiple inputs).
+            (if the trained_model has multiple inputs).
         batch_size: integer.
         verbose: verbosity mode, 0 or 1.
     # Returns:
         A numpy array of class and probability predictions.
     """
-    probability = model.predict(x, batch_size=batch_size, verbose=verbose)
+    probability = trained_model.predict(x, batch_size=batch_size, verbose=verbose)
     discretized = np.frompyfunc(lambda x: 1 if (x >= 0.0) else -1, 1, 1)(probability)
     return discretized, probability
+
+
+def draw_decision_boundary(fig, ax, node_id=InputType.X1, trained_model=None, discretize=False, enable_colorbar=True):
+
+    if trained_model is None:
+        im = HeatMap.updateBackground(ax, None, node_id, discretize)
+    else:
+        boundary_array = Player.get_boundary_array()
+        probability = predict_proba(trained_model, boundary_array)
+        im = HeatMap.updateBackground(ax, None, None, discretize, probability)
+
+    if enable_colorbar:
+        _add_colorbar_on_bottom(fig, ax, im)
+
+    return im
+

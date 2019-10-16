@@ -1,5 +1,5 @@
 # ==============================================================================
-# Copyright 2018 Digital Advantage Co., Ltd. All Rights Reserved.
+# Copyright 2018-2019 Digital Advantage Co., Ltd. All Rights Reserved.
 #
 # This is a Python implementation of [tensorflow / playground (Deep playground) / dataset.ts](https://github.com/tensorflow/playground/blob/master/src/playground.ts).
 #
@@ -62,7 +62,7 @@ class Player:
 
 
     @staticmethod
-    def update_decision_boundary(boundary = None, discretize=False):
+    def update_decision_boundary(boundary=None, discretize=False):
         '''
          Given a neural network, it asks the network for the output (prediction)
          of every node in the network using inputs sampled on a square grid.
@@ -110,6 +110,56 @@ class Player:
                 # });
 
         return boundary
+
+
+    @staticmethod
+    def get_boundary_array():
+        '''
+        It generates a ndarray of initial boundary and return it.
+
+        ###:return: a ndarray of initial boundary
+        '''
+
+        row_length = DENSITY * DENSITY
+        col_length = 2 # (x, y)
+        boundary_of_result = np.empty((row_length, col_length))
+
+        xScale = ScaleLinear(domain=[0, DENSITY - 1], slrange=POINT_DOMAIN)
+        yScale = ScaleLinear(domain=[DENSITY - 1, 0], slrange=POINT_DOMAIN)
+
+        for row_of_density in range(DENSITY):
+            for col_of_density in range(DENSITY):
+                x = xScale(col_of_density)
+                y = yScale(row_of_density)
+                row = (row_of_density * DENSITY) + col_of_density
+                boundary_of_result[row][0] = x
+                boundary_of_result[row][1] = y
+
+        return boundary_of_result
+
+
+    @staticmethod
+    def get_decision_boundary_of_node(probability, discretize=False):
+        '''
+         It returns desicison boundary from a ndarray of prediction.
+
+        ###:param network:
+        :param probability:
+        :param discretize:
+        :return:
+        '''
+
+        boundary_of_node = np.empty([DENSITY, DENSITY])
+
+        for row in range(DENSITY):
+            for col in range(DENSITY):
+                row_of_array = (row * DENSITY) + col
+                value = probability[row_of_array]
+                if discretize:
+                    value = 1 if value >= 0 else -1
+                boundary_of_node[row][col] = value
+
+        return boundary_of_node
 
 
     # function getLoss(network: nn.Node[][], dataPoints: Example2D[]): number
