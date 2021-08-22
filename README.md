@@ -117,10 +117,10 @@ except ImportError:
 print('pg.plot_sample', str(signature(pg.plot_sample)))
 # pg.plot_sample (data_type, noise=0.0, validation_size=0.5, visualize_validation_data=False, figsize=(5, 5), dpi=100, node_id=None, discretize=False)
 
-print('pg.generate', str(signature(pg.generate)))
+print('pg.generate', str(signature(pg.generate_data)))
 # pg.generate (data_type, noise=0.0)
 
-print('pg.split_data', str(signature(pg.data)))
+print('pg.split_data', str(signature(pg.split_data)))
 # pg.split_data (data, validation_size=0.5, label_num=1)
 
 print('pg.plot_points_with_playground_style', str(signature(pg.plot_points_with_playground_style)))
