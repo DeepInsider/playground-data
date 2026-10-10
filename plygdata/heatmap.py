@@ -36,7 +36,7 @@ class HeatMap:
     def draw_decision_boundary_of_node(ax, boundary_of_node):
         cmap, norm = DataColor.get_colormap()
         alpha = (160 / 255)
-        im = ax.imshow(boundary_of_node, extent=RECT_DOMAIN, cmap=cmap, norm=norm, alpha=alpha, interpolation='Bicubic')
+        im = ax.imshow(boundary_of_node, extent=RECT_DOMAIN, cmap=cmap, norm=norm, alpha=alpha, interpolation='bicubic')
         return im
 
 
@@ -54,7 +54,7 @@ class HeatMap:
     @staticmethod
     def updateCircles(ax, X_points, y_label, edgecolors):
         for i in range(len(X_points)):
-            ax.scatter(X_points[i, 0], X_points[i, 1], s=20, c=DataColor.get_rgb(y_label[i]), alpha=0.9, linewidths=0.7, edgecolors=edgecolors)
+            ax.scatter(X_points[i, 0], X_points[i, 1], s=20, c=DataColor.get_rgb(y_label[i].item()), alpha=0.9, linewidths=0.7, edgecolors=edgecolors)
 
 
     @staticmethod
@@ -76,34 +76,14 @@ class HeatMap:
     def reduceMatrix(matrix, factor):
 
         len_matrix = len(matrix)
-
-        if len_matrix != len(matrix[0]):
-            raise ValueError("The provided matrix must be a square matrix")
-
-        if len_matrix % factor != 0:
+        if not isinstance(factor, int) or isinstance(factor, bool) or factor <= 0:
+            raise ValueError("The reduction factor must be a positive integer")
+        if not len_matrix or any(len(row) != len_matrix for row in matrix):
+            raise ValueError("The provided matrix must be a nonempty square matrix")
+        if len_matrix % factor:
             raise ValueError("The width/height of the matrix must be divisible by the reduction factor")
-
-        result = [None] * (len_matrix / factor)
-
-        try:
-            zrange = xrange
-        except NameError:
-            zrange = range
-
-        for i in zrange(0, len_matrix, factor):
-
-            result[i / factor] = [None] * (matrix.length / factor)
-
-            for j in zrange(0, len_matrix, factor):
-                avg = 0
-
-                # Sum all the values in the neighborhood.
-                for k in range(factor):
-                    for l in range(factor):
-                        avg += matrix[i + k][j + l]
-
-                avg = avg / (factor * factor)
-                result[i / factor][j / factor] = avg
-
-        return result
-
+        return [
+            [sum(matrix[i + k][j + l] for k in range(factor) for l in range(factor))
+             / (factor * factor) for j in range(0, len_matrix, factor)]
+            for i in range(0, len_matrix, factor)
+        ]

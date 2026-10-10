@@ -1,0 +1,40 @@
+[build-system]
+requires = ["setuptools>=77"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "playground-data"
+dynamic = ["version"]
+description = "Data Generation for Neural Network Playground of Deep Insider"
+readme = "README.md"
+requires-python = ">=3.11"
+license = "Apache-2.0 AND BSD-3-Clause"
+license-files = ["LICENSE"]
+authors = [{name = "Digital Advantage Co., Ltd."}]
+keywords = ["data", "generation", "tensorflow", "neural", "network", "playground"]
+classifiers = [
+  "Development Status :: 5 - Production/Stable",
+  "Intended Audience :: Developers",
+  "Intended Audience :: Science/Research",
+  "Topic :: Scientific/Engineering",
+  "Programming Language :: Python :: 3",
+]
+dependencies = ["numpy>=2.0", "matplotlib>=3.9"]
+
+[project.urls]
+Homepage = "https://github.com/DeepInsider/playground-data"
+Issues = "https://github.com/DeepInsider/playground-data/issues"
+Demo = "https://deepinsider.github.io/playground-data/"
+
+[dependency-groups]
+dev = ["pytest>=8", "twine>=6"]
+
+[tool.setuptools.packages.find]
+include = ["plygdata*"]
+
+[tool.setuptools.dynamic]
+version = {attr = "plygdata._version.__version__"}
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+filterwarnings = ["error"]

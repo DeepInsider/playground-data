@@ -9,14 +9,14 @@ Official pages
 -------------------------------------------------------------------
 
 - [The python package "playground-data" on PyPI for this project is available here][pypi].
-- [The source for this package is available here][src]. [![Build Status](https://travis-ci.org/DeepInsider/playground-data.svg?branch=master)](https://travis-ci.org/DeepInsider/playground-data)
+- [The source for this package is available here][src].
 
 Requirements
 -------------------------------------------------------------------
 
-- Python 3.4+
-- numpy
-- matplotlib
+- Python 3.11+
+- NumPy 2.0+
+- Matplotlib 3.9+
 
 Install this package using `pip`
 -------------------------------------------------------------------
@@ -29,8 +29,6 @@ Usage
 -------------------------------------------------------------------
 
 ```python
-from __future__ import print_function
-
 print('Import plygdata package as pg')
 
 import plygdata as pg
@@ -103,25 +101,16 @@ pg.draw_decision_boundary(fig, ax, node_id=pg.InputType.X1, discretize=False)
 ```
 
 ```python
-print('Signature of main @staticmethod')
-
-import sys
-if sys.version_info[0] < 3: # inspect.signature was introduced at version Python 3.3
-  !pip install funcsigs
-
-try:
-    from inspect import signature
-except ImportError:
-    from funcsigs import signature
+from inspect import signature
 
 print('pg.plot_sample', str(signature(pg.plot_sample)))
-# pg.plot_sample (data_type, noise=0.0, validation_size=0.5, visualize_validation_data=False, figsize=(5, 5), dpi=100, node_id=None, discretize=False)
+# pg.plot_sample (data_type, noise=0.0, validation_size=0.5, visualize_validation_data=False, figsize=(5, 5), dpi=100, node_id=None, discretize=False, training_size=-1.0)
 
 print('pg.generate_data', str(signature(pg.generate_data)))
 # pg.generate_data (data_type, noise=0.0)
 
 print('pg.split_data', str(signature(pg.split_data)))
-# pg.split_data (data, validation_size=0.5, label_num=1)
+# pg.split_data (data, validation_size=0.5, label_num=1, training_size=-1.0)
 
 print('pg.plot_points_with_playground_style', str(signature(pg.plot_points_with_playground_style)))
 # pg.plot_points_with_playground_style (X_train, y_train, X_valid=None, y_valid=None, figsize=(5, 5), dpi=100)
@@ -136,9 +125,32 @@ print('pg.plot_points', str(signature(pg.plot_points)))
 # pg.plot_points (ax, X_train, y_train, X_valid=None, y_valid=None)
 
 print('pg.draw_decision_boundary', str(signature(pg.draw_decision_boundary)))
-# pg.draw_decision_boundary (fig, ax, node_id='x', discretize=False, enable_colorbar=True)
+# pg.draw_decision_boundary (fig, ax, node_id='x', trained_model=None, discretize=False, enable_colorbar=True)
 
 ```
+
+Development with uv
+-------------------------------------------------------------------
+
+The Usage examples and all six dataset alternatives are covered by automated tests.
+See [PyPI example validation](docs/pypi-example-validation.md) for the published 1.1.1 example issues.
+
+Version 1.2.0 uses uv and a project-local `.venv`; Conda is not required.
+
+```bash
+uv python install 3.15
+uv sync --locked
+uv run pytest -q
+uv build --no-sources --out-dir dist/release
+uv run twine check --strict dist/release/*
+```
+
+Commit `uv.lock` and `.python-version`. Python 2 and Python 3.4–3.10 are no
+longer supported. Consumers can continue using `pip install playground-data`.
+For article notebooks, see [locked Jupyter environments and execution instructions](notebooks/README.md).
+
+See [development and release instructions](docs/development.md) and
+[release notes](CHANGELOG.md). The Web demo uses TensorFlow.js 4.22.0 and D3 7.9.0.
 
 Sample Web app
 -------------------------------------------------------------------

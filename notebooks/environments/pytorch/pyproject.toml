@@ -1,0 +1,8 @@
+[project]
+name = "playground-data-notebooks-pytorch"
+version = "0.1.0"
+requires-python = ">=3.12,<3.13"
+dependencies = ["playground-data", "jupyterlab", "nbformat", "nbclient", "nbconvert", "ipykernel", "pandas", "torch==2.14.1", "torchvision", "torchviz"]
+
+[tool.uv.sources]
+playground-data = {path = "../../..", editable = true}

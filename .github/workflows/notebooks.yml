@@ -1,0 +1,27 @@
+name: Article notebooks
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  notebooks:
+    runs-on: windows-latest
+    timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      matrix:
+        group: [base, tensorflow, pytorch]
+    steps:
+      - uses: actions/checkout@v7.0.1
+      - uses: astral-sh/setup-uv@v10.3.0
+      - run: uv sync --project notebooks/environments/${{ matrix.group }} --locked
+      - if: matrix.group != 'base'
+        run: ./scripts/setup_graphviz.ps1
+      - run: uv run --project notebooks/environments/${{ matrix.group }} --locked python scripts/validate_notebooks.py ${{ matrix.group }} --prepare
+      - uses: actions/upload-artifact@v7.0.2
+        if: always()
+        with:
+          name: notebooks-${{ matrix.group }}
+          path: |
+            .artifacts/notebooks/*-results.json
+            .artifacts/notebooks/executed/

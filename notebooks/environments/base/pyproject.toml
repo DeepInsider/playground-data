@@ -1,0 +1,8 @@
+[project]
+name = "playground-data-notebooks-base"
+version = "0.1.0"
+requires-python = ">=3.12,<3.13"
+dependencies = ["playground-data", "jupyterlab", "nbformat", "nbclient", "nbconvert", "ipykernel", "pandas"]
+
+[tool.uv.sources]
+playground-data = {path = "../../..", editable = true}

@@ -57,7 +57,7 @@ def split_data(data, validation_size=0.5, label_num=1, training_size=-1.0):
     np.random.shuffle(mat)
 
     X = mat[:, :-(label_num)]  # data
-    y = mat[:, -(label_num)]   # label
+    y = mat[:, -label_num:]   # labels
 
     if training_size >= 0.0 and training_size <= 1.0:
         validation_size = 1.0 - training_size
@@ -110,7 +110,7 @@ def get_playground_axes(fig):
     ax.get_xticklabels()[TICKS_MIDDLE].set_color("#333333")
     ax.get_yticklabels()[TICKS_MIDDLE].set_color("#333333")
     #ax.grid(color='white', linestyle='-')
-    ax.grid(b=False)
+    ax.grid(visible=False)
     return ax
 
 
@@ -185,7 +185,7 @@ def predict_classes(trained_model, x, batch_size=32, verbose=0):
         A numpy array of class predictions.
     """
     preds = trained_model.predict(x, batch_size=batch_size, verbose=verbose)
-    discretized = np.frompyfunc(lambda x: 1 if (x >= 0.0) else -1, 1, 1)(preds)
+    discretized = np.where(preds >= 0.0, 1, -1)
     return discretized
 
 
@@ -216,7 +216,7 @@ def predict_classes_proba(trained_model, x, batch_size=32, verbose=0):
         A numpy array of class and probability predictions.
     """
     probability = trained_model.predict(x, batch_size=batch_size, verbose=verbose)
-    discretized = np.frompyfunc(lambda x: 1 if (x >= 0.0) else -1, 1, 1)(probability)
+    discretized = np.where(probability >= 0.0, 1, -1)
     return discretized, probability
 
 

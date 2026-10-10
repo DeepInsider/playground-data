@@ -149,15 +149,9 @@ class Player:
         :return:
         '''
 
-        boundary_of_node = np.empty([DENSITY, DENSITY])
-
-        for row in range(DENSITY):
-            for col in range(DENSITY):
-                row_of_array = (row * DENSITY) + col
-                value = probability[row_of_array]
-                if discretize:
-                    value = 1 if value >= 0 else -1
-                boundary_of_node[row][col] = value
+        boundary_of_node = np.asarray(probability, dtype=float).reshape(DENSITY, DENSITY)
+        if discretize:
+            boundary_of_node = np.where(boundary_of_node >= 0.0, 1.0, -1.0)
 
         return boundary_of_node
 

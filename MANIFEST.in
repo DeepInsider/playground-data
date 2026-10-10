@@ -1,8 +1,7 @@
-# Include the README
-include *.md
-
-# Include the license file
-include LICENSE
-
-# Include the data files
-recursive-include data *
+include README.md CHANGELOG.md LICENSE
+include pyproject.toml setup.py setup.cfg
+include docs/development.md docs/pypi-example-validation.md
+recursive-include tests *.py
+prune .uv-cache
+prune .artifacts
+prune .venv

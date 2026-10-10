@@ -64,7 +64,7 @@ let loadLearnedModel = async function (filepath) {
   try {
     showSpinner()
 
-    var loadedModel = await tf.loadModel(filepath);
+    var loadedModel = await tf.loadLayersModel(filepath);
 
     loadedModel.summary();
 
@@ -88,16 +88,18 @@ let drawDecisionBoundary = async function (model, discretize) {
     var boundary = await getDecisionBoundary(function (arrayInput) {
       //console.log(arrayInput);
 
-      var tensorInput = getTensor2dData(arrayInput);
-      //tensorInput.print();
+      return tf.tidy(() => {
+        var tensorInput = getTensor2dData(arrayInput);
+        //tensorInput.print();
 
-      var tensorOutput = model.predict(tensorInput);
-      //tensorOutput.print();
+        var tensorOutput = model.predict(tensorInput);
+        //tensorOutput.print();
 
-      var arrayOutput = tensorOutput.dataSync();
-      //console.log(arrayOutpuPoints);
+        var arrayOutput = tensorOutput.dataSync();
+        //console.log(arrayOutpuPoints);
 
-      return arrayOutput;
+        return arrayOutput;
+      });
     });
 
     //console.log('finish.')
@@ -126,6 +128,7 @@ let predictFromModel = async function (model, tensorInput) {
 
   // データをTensor2d型からJavaScriptのArray型に変換
   var arrayOutput = tensorOutput.dataSync();
+  tensorOutput.dispose();
   //console.log(arrayOutput);
 
   // テストデータの座標点と予測結果を配列にまとめる
@@ -197,7 +200,7 @@ let updateUI = async function (tensorInput) {
 
     plotCoordinatePoints(dictArrayOutput, discretizePointsColor);
 
-  });
+  }).finally(() => tensorInput.dispose());
 
 }
 

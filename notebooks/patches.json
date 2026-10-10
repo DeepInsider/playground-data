@@ -1,0 +1,154 @@
+{
+  "basic": {
+    "11": {
+      "source": "print('Basic code for generating and graphing data')\n\ndata_noise=0.0\nvalidation_data_ratio = 0.5\n\n# Generate data\ndata_array = pg.generate_data(pg.DatasetType.ClassifyCircleData, data_noise)\n#data_array = pg.generate_data(pg.DatasetType.ClassifyXORData, data_noise)\n#data_array = pg.generate_data(pg.DatasetType.ClassifyTwoGaussData, data_noise)\n#data_array = pg.generate_data(pg.DatasetType.ClassifySpiralData, data_noise)\n#data_array = pg.generate_data(pg.DatasetType.RegressPlane, data_noise)\n#data_array = pg.generate_data(pg.DatasetType.RegressGaussian, data_noise)\n\n# Divide the data for training and validating at a specified ratio (further, separate each data into Coordinate point data part and teacher label part)\nX_train, y_train, X_valid, y_valid = pg.split_data(data_array, validation_size=validation_data_ratio)\n\n# Plot the data on the standard graph for Playground\nfig, ax = pg.plot_points_with_playground_style(X_train, y_train, X_valid, y_valid, figsize = (6, 6), dpi = 100)\n\n# draw the decision boundary of X1 input (feature)\npg.draw_decision_boundary(fig, ax, node_id=pg.InputType.X1, discretize=False)\n\n# # uncomment if a graph is not shown\n# import matplotlib.pyplot as plt\n# plt.show()",
+      "reason": "Current package API / Windows portability"
+    },
+    "12": {
+      "source": "from inspect import signature\nfor name in ['plot_sample', 'generate_data', 'split_data', 'plot_points_with_playground_style']:\n    print(name, signature(getattr(pg, name)))",
+      "reason": "Current package API / Windows portability"
+    }
+  },
+  "deeplearning1g1t_lesson08": {
+    "89": {
+      "source": "import os\n\nprint(__import__('platform').uname())  # posix.uname_result(sysname='Linux', nodename='x0x0x0', release='4.14.65+', version='#1 SMP Sun Sep 9 02:18:33 PDT 2018', machine='x86_64')",
+      "reason": "Current package API / Windows portability"
+    }
+  },
+  "deeplearning1g1t_lesson07": {
+    "69": {
+      "source": "(x_train, y_train),(x_test, y_test) = mnist.load_data()",
+      "reason": "Public Keras 3 API, current array inputs, or Windows portability"
+    },
+    "77": {
+      "source": "import matplotlib.pyplot as plt  # 下記コードの実行に必要なライブラリを追記\n\ndef plot_image(i, predictions_array, true_label, img):\n  # ……省略……\n\n  plt.imshow(img, cmap=plt.cm.binary)\n  # ……省略……",
+      "reason": "Public Keras 3 API, current array inputs, or Windows portability"
+    },
+    "118": {
+      "source": "from tensorflow.keras import Model as Network  # 下記コードの実行に必要なモジュールを追記\n# ……省略……\n\nclass Model(Network):\n  # ……省略……\n\n  def compile(self,\n              optimizer,\n              loss=None,\n              metrics=None,\n              loss_weights=None,\n              sample_weight_mode=None,\n              weighted_metrics=None,\n              target_tensors=None,\n              distribute=None,\n              **kwargs):\n    pass # ……省略……\n\n  def fit(self,\n          x=None,\n          y=None,\n          batch_size=None,\n          epochs=1,\n          verbose=1,\n          callbacks=None,\n          validation_split=0.,\n          validation_data=None,\n          shuffle=True,\n          class_weight=None,\n          sample_weight=None,\n          initial_epoch=0,\n          steps_per_epoch=None,\n          validation_steps=None,\n          max_queue_size=10,\n          workers=1,\n          use_multiprocessing=False,\n          **kwargs):\n    pass # ……省略……\n\n  def evaluate(self,\n               x=None,\n               y=None,\n               batch_size=None,\n               verbose=1,\n               sample_weight=None,\n               steps=None,\n               max_queue_size=10,\n               workers=1,\n               use_multiprocessing=False):\n    pass # ……省略……\n\n  # ……省略……",
+      "reason": "Public Keras 3 API, current array inputs, or Windows portability"
+    }
+  },
+  "deeplearningpyt": {
+    "171": {
+      "source": "# ドット（.）を出力するクラスの定義\nclass PrintDot(keras.callbacks.Callback):  # Lesson 12で説明\n  # 各エポックの最後に呼び出されるクラスのメソッド（＝関数の一種）の定義\n  def on_epoch_end(self, epoch, logs):\n    # ……何らかの処理（前回説明）……\n    print('.', end='')",
+      "reason": "Public Keras 3 API, current array inputs, or Windows portability"
+    },
+    "219": {
+      "source": "from tensorflow.keras import Model as Network  # 下記コードの実行に必要なモジュールを追記\n# ……省略……\n\nclass Model(Network):\n  # ……省略……\n\n  def compile(self,\n              optimizer,\n              loss=None,\n              metrics=None,\n              loss_weights=None,\n              sample_weight_mode=None,\n              weighted_metrics=None,\n              target_tensors=None,\n              distribute=None,\n              **kwargs):\n    pass # ……省略……\n\n  def fit(self,\n          x=None,\n          y=None,\n          batch_size=None,\n          epochs=1,\n          verbose=1,\n          callbacks=None,\n          validation_split=0.,\n          validation_data=None,\n          shuffle=True,\n          class_weight=None,\n          sample_weight=None,\n          initial_epoch=0,\n          steps_per_epoch=None,\n          validation_steps=None,\n          max_queue_size=10,\n          workers=1,\n          use_multiprocessing=False,\n          **kwargs):\n    pass # ……省略……\n\n  def evaluate(self,\n               x=None,\n               y=None,\n               batch_size=None,\n               verbose=1,\n               sample_weight=None,\n               steps=None,\n               max_queue_size=10,\n               workers=1,\n               use_multiprocessing=False):\n    pass # ……省略……\n\n  # ……省略……",
+      "reason": "Public Keras 3 API, current array inputs, or Windows portability"
+    },
+    "232": {
+      "source": "import os\n\nprint(__import__('platform').uname()) \n# posix.uname_result(sysname='Linux', nodename='x0x0x0', release='4.14.79+', version='#1 SMP Wed Dec 19 21:19:13 PST 2018', machine='x86_64')\n# 上記の出力結果は環境により異なるので注意",
+      "reason": "Public Keras 3 API, current array inputs, or Windows portability"
+    },
+    "262": {
+      "source": "f = open('data.csv')\nlines = f.readlines()\nf.close()",
+      "reason": "Article intentionally demonstrates a missing data.csv file",
+      "expected_error": "FileNotFoundError"
+    },
+    "264": {
+      "source": "try:\n  f = open('data.csv')\n  print('ファイルは正常に開けました。')\n\nexcept FileNotFoundError as e:\n#except IOError as e:  # Python 2系の場合\n  print('ファイルがないようです。')\n  print(e)  # [Errno 2] No such file or directory: 'data.csv'\n  raise\n\nexcept:\n  print('何らかの例外が発生しました。')\n  raise\n\nfinally:\n  print('ここは常に最後に実行される。')\n  \nlines = f.readlines()\nf.close()",
+      "reason": "Article intentionally demonstrates a missing data.csv file",
+      "expected_error": "FileNotFoundError"
+    }
+  },
+  "tf2_keras_neuralnetwork": {
+    "66": {
+      "source": "import keras.ops as K\n\ndef tanh_accuracy(y_true, y_pred):           # y_trueは正解、y_predは予測（出力）\n  threshold = K.cast(0.0, y_pred.dtype)              # -1か1かを分ける閾値を作成\n  y_pred = K.cast(y_pred >= threshold, y_pred.dtype) # 閾値未満で0、以上で1に変換\n  # 2倍して-1.0することで、0／1を-1.0／1.0にスケール変換して正解率を計算\n  return K.mean(K.equal(y_true, y_pred * 2 - 1.0), axis=-1)",
+      "reason": "Public Keras 3 API, current array inputs, or Windows portability"
+    },
+    "38": {
+      "source": "# ライブラリ「TensorFlow」のtensorflowパッケージを「tf」という別名でインポート\nimport tensorflow as tf\n# ライブラリ「NumPy」のnumpyパッケージを「np」という別名でインポート\nimport numpy as np\n\n# 定数（モデル定義時に必要となるもの）\nINPUT_FEATURES = 2  # 入力（特徴）の数： 2\nLAYER1_NEURONS = 1  # ニューロンの数： 1\n\n# パラメーター（ニューロンへの入力で必要となるもの）\nweight_array = np.array([[ 0.6 ],\n                         [-0.2 ]])       # 重み\nbias_array   = np.array([  0.8 ])        # バイアス\n\n# 積層型のモデルの定義\nmodel = tf.keras.models.Sequential([\n  tf.keras.layers.Dense(\n    input_shape=(INPUT_FEATURES,),       # 入力の形状\n    units=LAYER1_NEURONS,                # ユニットの数\n    activation='tanh')                   # 活性化関数\n])\nmodel.set_weights([weight_array, bias_array])\n\n# このモデルに、データを入力して、出力を得る（＝予測：predictする）\nX_data = np.array([[1.0, 2.0]])          # 入力する座標データ（1.0、2.0）\nprint(model.predict(X_data))             # 出力を得る\n# [[0.7615942]] ……などと表示される",
+      "reason": "Set Dense weights after the model has been built"
+    },
+    "90": {
+      "source": "start_index = 0 # Sequential（積層型）モデルの場合は、0スタート\n#start_index = 1 # Functional（関数型）APIの場合は、0が入力層になっているので注意\n\n\n# 隠れ層1\nhidden1_layer = model.layers[start_index]\nprint(' 隠れ層1：',hidden1_layer.name)\nhidden1_weights =  hidden1_layer.get_weights()\nprint(hidden1_weights)\n# weights = hidden1_weights[0]\nh1_w1 = hidden1_weights[0][0, 0]\nh1_w2 = hidden1_weights[0][1, 0]\n# biases = hidden1_weights[1]\nh1_b = hidden1_weights[1][0]\n# 一部を出力\nprint('h1_w1=',h1_w1)\nprint('h1_w2=',h1_w2)\nprint('h1_b=',h1_b)\nprint()\n\n# 中間レイヤーにおける出力例\nprint(' 隠れ層1の出力')\ntest_data = np.array([[0.4, 3.2], [5.8, 3.1], [-5.8, -3.1]], dtype=np.float32)\nintermediate1_model = tf.keras.models.Model(inputs=model.inputs, outputs=hidden1_layer.output)\nintermediate1_output = intermediate1_model.predict(test_data)\nprint(intermediate1_output)\nprint()\n\n\n# 隠れ層2\nhidden2_layer = model.layers[start_index+1]\nprint(' 隠れ層2：',hidden2_layer.name)\nhidden2_weights =  hidden2_layer.get_weights()\nprint(hidden2_weights)\n# weights = hidden2_weights[0]\nh2_w1 = hidden2_weights[0][0, 0]\nh2_w2 = hidden2_weights[0][1, 0]\n# biases = hidden2_weights[1]\nh2_b = hidden2_weights[1][0]\n# 一部を出力\nprint('h2_w1=',h2_w1)\nprint('h2_w2=',h2_w2)\nprint('h2_b=',h2_b)\nprint()\n\n# 中間レイヤーにおける出力例\nprint(' 隠れ層2の出力')\ntest_data = np.array([[0.4, 3.2], [5.8, 3.1], [-5.8, -3.1]], dtype=np.float32)\nintermediate2_model = tf.keras.models.Model(inputs=model.inputs, outputs=hidden2_layer.output)\nintermediate2_output = intermediate2_model.predict(test_data)\nprint(intermediate2_output)\nprint()\n\n\n# 出力層\noutput_layer = model.layers[start_index+2]\nprint(' 出力層：',output_layer.name)\noutput_weights =  output_layer.get_weights()\nprint(output_weights)\n# weights = output_weights[0]\no_w1 = output_weights[0][0, 0]\no_w2 = output_weights[0][1, 0]\n# biases = output_weights[1]\no_b = output_weights[1][0]\n# 一部を出力\nprint('o_w1=',o_w1)\nprint('o_w2=',o_w2)\nprint('o_b=',o_b)\nprint()\n\n# 出力レイヤーにおける出力例\nprint('出力層の出力＝モデル全体の出力')\noutput_model = tf.keras.models.Model(inputs=model.inputs, outputs=output_layer.output)\noutput_output = output_model.predict(test_data)\nprint(output_output)\nprint()\n\nprint('モデル全体の出力')\ntest_data = np.array([[0.4, 3.2], [5.8, 3.1], [-5.8, -3.1]], dtype=np.float32)\nresult = model.predict(test_data)\nprint(result)",
+      "reason": "Keras 3 exposes the Sequential input graph through inputs"
+    }
+  },
+  "tf2_keras_howtowrite": {
+    "35": {
+      "source": "import keras.ops as K\n\ndef tanh_accuracy(y_true, y_pred):           # y_trueは正解、y_predは予測（出力）\n  threshold = K.cast(0.0, y_pred.dtype)              # -1か1かを分ける閾値を作成\n  y_pred = K.cast(y_pred >= threshold, y_pred.dtype) # 閾値未満で0、以上で1に変換\n  # 2倍して-1.0することで、0／1を-1.0／1.0にスケール変換して正解率を計算\n  return K.mean(K.equal(y_true, y_pred * 2 - 1.0), axis=-1)",
+      "reason": "Public Keras 3 API, current array inputs, or Windows portability"
+    },
+    "48": {
+      "source": "# 学習方法を設定し、学習し、推論（予測）する\nmodel.compile(tf.keras.optimizers.SGD(learning_rate=0.03), loss='mean_squared_error', metrics=[tanh_accuracy])\nhist = model.fit(X_train, y_train, validation_data=(X_valid, y_valid), batch_size=15, epochs=100, verbose=1)\nmodel.predict(np.array([[0.1,-0.2]], dtype='float32'))",
+      "reason": "Use named Keras 3 compile metrics and ndarray prediction input"
+    },
+    "59": {
+      "source": "# 学習方法を設定し、学習し、推論（予測）する\nmodel.compile(tf.keras.optimizers.SGD(learning_rate=0.03), loss='mean_squared_error', metrics=[tanh_accuracy])\nhist = model.fit(X_train, y_train, validation_data=(X_valid, y_valid), batch_size=15, epochs=100, verbose=1)\nmodel.predict(np.array([[0.1,-0.2]], dtype='float32'))",
+      "reason": "Use named Keras 3 compile metrics and ndarray prediction input"
+    },
+    "67": {
+      "source": "# 学習方法を設定し、学習し、推論（予測）する\nmodel.compile(tf.keras.optimizers.SGD(learning_rate=0.03), loss='mean_squared_error', metrics=[tanh_accuracy])\nhist = model.fit(X_train, y_train, validation_data=(X_valid, y_valid), batch_size=15, epochs=100, verbose=1)\nmodel.predict(np.array([[0.1,-0.2]], dtype='float32'))",
+      "reason": "Use named Keras 3 compile metrics and ndarray prediction input"
+    },
+    "82": {
+      "source": "model1 = NeuralNetwork(name='subclassing_model1') # モデルの生成\n\n# 方法1： 推論して動的にグラフを構築する\ntemp_input = np.array([[0.1,-0.2]], dtype='float32')                         # 仮の入力値\ntemp_output = model1.predict(temp_input)          # 推論の実行\n\n# モデルの内容を出力\nmodel1.summary()\n\n# モデルの構成図を表示\ntf.keras.utils.plot_model(model1, show_shapes=True, show_layer_names=True, to_file='model.png')\nfrom IPython.display import Image\nImage(retina=False, filename='model.png')",
+      "reason": "Build and diagram model1 with ndarray inputs"
+    },
+    "93": {
+      "source": "# 学習方法を設定し、学習し、推論（予測）する\nmodel.compile(tf.keras.optimizers.SGD(learning_rate=0.03), loss='mean_squared_error', metrics=[tanh_accuracy])\nhist = model.fit(X_train, y_train, validation_data=(X_valid, y_valid), batch_size=15, epochs=100, verbose=1)\nmodel.predict(np.array([[0.1,-0.2]], dtype='float32'))",
+      "reason": "Use named Keras 3 compile metrics and ndarray prediction input"
+    },
+    "98": {
+      "source": "import keras.ops as K\n\n# カスタムの評価関数を実装（TensorFlow低水準API利用）\n# （tf.keras.metrics.binary_accuracy()の代わり）\ndef tanh_accuracy(y_true, y_pred):           # y_trueは正解、y_predは予測（出力）\n  threshold = K.cast(0.0, y_pred.dtype)              # -1か1かを分ける閾値を作成\n  y_pred = K.cast(y_pred >= threshold, y_pred.dtype) # 閾値未満で0、以上で1に変換\n  # 2倍して-1.0することで、0／1を-1.0／1.0にスケール変換して正解率を計算\n  return K.mean(K.equal(y_true, y_pred * 2 - 1.0), axis=-1)\n\n# カスタムの評価関数クラスを実装（サブクラス化）\n# （tf.keras.metrics.BinaryAccuracy()の代わり）\nclass TanhAccuracy(tf.keras.metrics.Mean):\n  def __init__(self, name='tanh_accuracy', dtype=None):\n    super(TanhAccuracy, self).__init__(name, dtype)\n\n  # 正解率の状態を更新する際に呼び出される関数をカスタマイズ\n  def update_state(self, y_true, y_pred, sample_weight=None):\n    matches = tanh_accuracy(y_true, y_pred)\n    return super(TanhAccuracy, self).update_state(\n        matches, sample_weight=sample_weight)",
+      "reason": "Public Keras 3 API, current array inputs, or Windows portability"
+    },
+    "116": {
+      "source": "import keras.ops as K\n\n# ###【エキスパート向け】訓練する（1回分） ###\n@tf.function\ndef train_step(train_X, train_y):\n  # 訓練モードに設定\n  training = True\n\n  with tf.GradientTape() as tape: # 勾配をテープに記録\n    # フォワードプロパゲーションで出力結果を取得\n    #train_X                                   # 入力データ\n    pred_y = model(train_X, training=training) # 出力結果\n    #train_y                                   # 正解ラベル\n\n    # 出力結果と正解ラベルから損失を計算し、勾配を求める\n    loss = criterion(pred_y, train_y)     # 誤差（出力結果と正解ラベルの差）から損失を取得\n  \n  # 逆伝播の処理として勾配を計算（自動微分）\n  gradient = tape.gradient(loss, model.trainable_weights)\n\n  # 勾配を使ってパラメーター（重みとバイアス）を更新\n  optimizer.apply_gradients(zip(gradient, model.trainable_weights)) # 指定されたデータ分の最適化を実施\n\n  # 損失と正解率を算出して保存\n  train_loss(loss)\n  train_accuracy(train_y, pred_y)\n\n# ###【エキスパート向け】精度検証する（1回分） ###\n@tf.function\ndef valid_step(valid_X, valid_y):\n  # 評価モードに設定（※dropoutなどの挙動が評価用になる）\n  training = False\n\n  # フォワードプロパゲーションで出力結果を取得\n  #valid_X                                   # 入力データ\n  pred_y = model(valid_X, training=training) # 出力結果\n  #valid_y                                   # 正解ラベル\n\n  # 出力結果と正解ラベルから損失を計算\n  loss = criterion(pred_y, valid_y)     # 誤差（出力結果と正解ラベルの差）から損失を取得\n  # ※評価時は勾配を計算しない\n\n  # 損失と正解率を算出して保存\n  valid_loss(loss)\n  valid_accuracy(valid_y, pred_y)",
+      "reason": "Public Keras 3 API, current array inputs, or Windows portability"
+    },
+    "119": {
+      "source": "# 【初中級者向けとの比較用】入力データを指定して学習する\n# model.fit(\n#     ……訓練データ（入力）……, ……同（ラベル）……,\n#     ……精度検証データ……,\n#     ……バッチサイズ……,\n#     epochs=100,  # エポック数\n#     verbose=1)   # 実行状況の出力モード\n\n# ###【エキスパート向け】学習する ###\n\n# 定数（学習／評価時に必要となるもの）\nEPOCHS = 100             # エポック数： 100\n\n# 損失の履歴を保存するための変数\ntrain_history = []\nvalid_history = []\n\nfor epoch in range(EPOCHS):\n  # エポックのたびに、メトリクスの値をリセット\n  train_loss.reset_state()      # 「訓練」時における累計「損失値」\n  train_accuracy.reset_state()  # 「訓練」時における累計「正解率」\n  valid_loss.reset_state()      # 「評価」時における累計「損失値」\n  valid_accuracy.reset_state()  # 「評価」時における累計「正解率」\n\n  for train_X, train_y in train_dataset:\n    # 【重要】1ミニバッチ分の「訓練（学習）」を実行\n    train_step(train_X, train_y)\n          \n  for valid_X, valid_y in valid_dataset:\n    # 【重要】1ミニバッチ分の「評価（精度検証）」を実行\n    valid_step(valid_X, valid_y)\n\n  # ミニバッチ単位で累計してきた損失値や正解率の平均を取る\n  n = epoch + 1                          # 処理済みのエポック数\n  avg_loss = train_loss.result()         # 訓練用の平均損失値\n  avg_acc = train_accuracy.result()      # 訓練用の平均正解率\n  avg_val_loss = valid_loss.result()     # 訓練用の平均損失値\n  avg_val_acc = valid_accuracy.result()  # 訓練用の平均正解率\n\n  # グラフ描画のために損失の履歴を保存する\n  train_history.append(avg_loss)\n  valid_history.append(avg_val_loss)\n\n  # 損失や正解率などの情報を表示\n  print(f'[Epoch {n:3d}/{EPOCHS:3d}]' \\\n        f' loss: {avg_loss:.5f}, acc: {avg_acc:.5f}' \\\n        f' val_loss: {avg_val_loss:.5f}, val_acc: {avg_val_acc:.5f}')\n\nprint('Finished Training')\nprint(model.get_weights())  # 学習後のパラメーターの情報を表示",
+      "reason": "Public Keras 3 API, current array inputs, or Windows portability"
+    },
+    "130": {
+      "source": "# カスタムの活性化関数のPython関数を実装\ndef custom_activation(x):\n    return (tf.exp(x)-tf.exp(-x))/(tf.exp(x)+tf.exp(-x))\n\n# # TensorFlow低水準APIではなく、Keras backend APIを使ってもOK\n# import keras.ops as K\n# # 上記のインポートを行ったうえで、以下の内容で上記のコードを書き換えるだけ\n# # 「tf.exp」 → 「K.exp」\n\n# カスタムの活性化関数クラスを実装（レイヤーのサブクラス化）\n# （tf.keras.layers.Activation()の代わり）\nclass CustomActivation(tf.keras.layers.Layer):\n  def __init__(self, **kwargs):\n    super(CustomActivation, self).__init__(**kwargs)\n\n  def call(self, inputs):\n    return custom_activation(inputs)",
+      "reason": "Public Keras 3 API, current array inputs, or Windows portability"
+    },
+    "133": {
+      "source": "# カスタムの全結合層（線形変換）のPython関数を実装\ndef fully_connected(inputs, weights, bias):\n  return tf.matmul(inputs, weights) + bias\n\n# # TensorFlow低水準APIではなく、Keras backend APIを使ってもOK\n# import keras.ops as K\n# # 上記のインポートを行ったうえで、以下の内容で上記のコードを書き換えるだけ\n# 「tf.matmul」 → 「K.dot」\n\n# カスタムのレイヤークラスを実装（レイヤーのサブクラス化）\n# （tf.keras.layers.Dense()の代わり）\nclass CustomLayer(tf.keras.layers.Layer):\n  def __init__(self, units, input_dim=None, **kwargs):\n    self.input_dim = input_dim  # 入力の次元数（＝レイヤーの入力数）\n    self.units = units          # ニューロン数（＝レイヤーの出力数）\n    super(CustomLayer, self).__init__(**kwargs)\n\n  def get_config(self):\n    # レイヤー構成をシリアライズ可能にするメソッド（独自の設定項目がメンバー変数としてある場合など、必要に応じて実装する）\n    config = super(CustomLayer, self).get_config()\n    config.update({\n        'input_dim': self.input_dim,\n        'units': self.units\n    })\n    return config\n\n  def build(self, input_shape):\n    #print(input_shape) # 入力形状。例えば「(2, 2)」＝2行2列なら入力の次元数は2列\n    input_data_dim = input_shape[-1] # 入力の次元数（＝レイヤーの入力数）\n\n    # 入力の次元数をチェック（デバッグ）\n    if self.input_dim != None:\n      assert input_data_dim == self.input_dim  # 指定された入力次元数と実際の入力次元数が異なります\n\n    # 重みを追加する\n    self.kernel = self.add_weight(\n        shape=(input_data_dim, self.units),\n        name='kernel',\n        initializer='glorot_uniform',  # リスト1-3のような独自の関数も指定できる\n        trainable=True)\n\n    # バイアスを追加する\n    self.bias = self.add_weight(\n        shape=(self.units,),\n        name='bias',\n        initializer='zeros',\n        trainable=True)\n    \n    #self.built = True # Layerクラスでビルド済みかどうかを管理するのに使われている（なくても大きな問題はない）\n    super(CustomLayer, self).build(input_shape) # 上と同じ意味。APIドキュメントで推奨されている書き方\n\n  def call(self, inputs):\n    return fully_connected(inputs, self.kernel, self.bias)\n\n  # tf.kerasでは理由は明確には分からないが実装すべきメソッドとしては挙げられていない（compute_output_shape）\n  # 参考： [The inheriting keras.layers.Layer does not call a compute_output_shape after switching to tf.keras from keras · Issue #33785 · tensorflow/tensorflow](https://github.com/tensorflow/tensorflow/issues/33785)\n  # # for Keras to do automatic shape inference.\n  # def compute_output_shape(self, input_shape): # 純正Kerasは実装をするとよみみたいだが、tf.kerasでは呼ばれないようなので実装しなくてよい. tensorflow側のチュートリアルでは記載されていない\n  #   return (input_shape[0], self.units) # （データの行数=None、出力ユニット数）一応実装\n  #   # 作成したレイヤーの内部で入力から出力でshapeを変更する場合には、ここでshape変換のロジックを指定する必要がある。こうすることでKerasが自動的にshapeを推定する。",
+      "reason": "Public Keras 3 API, current array inputs, or Windows portability"
+    },
+    "140": {
+      "source": "# カスタムの損失関数のPython関数を実装\ndef custom_loss(y_true, y_pred):\n    return tf.reduce_mean(tf.square(y_true - y_pred))\n\n# # TensorFlow低水準APIではなく、Keras backend APIを使ってもOK\n# import keras.ops as K\n# # 上記のインポートを行ったうえで、以下の内容で上記のコードを書き換えるだけ\n# # 「tf.reduce_mean」 → 「K.mean」\n# # 「tf.square」 → 「K.square」\n\n# カスタムの損失関数クラスを実装（レイヤーのサブクラス化）\n# （tf.keras.losses.MeanSquaredError()の代わり）\nclass CustomLoss(tf.keras.losses.Loss):\n  def __init__(self, name=\"custom_loss\", **kwargs):\n    super(CustomLoss, self).__init__(name=name, **kwargs)\n\n  def call(self, y_true, y_pred):\n    y_pred = tf.convert_to_tensor(y_pred)  # 念のためTensor化\n    y_true = tf.cast(y_true, y_pred.dtype) # 念のため同じデータ型化\n    return custom_loss(y_true, y_pred)",
+      "reason": "Public Keras 3 API, current array inputs, or Windows portability"
+    },
+    "143": {
+      "source": "# 正解かどうかを判定する関数を実装\ndef custom_matches(y_true, y_pred):         # y_trueは正解、y_predは予測（出力）\n  threshold = tf.cast(0.0, y_pred.dtype)              # -1か1かを分ける閾値を作成\n  y_pred = tf.cast(y_pred >= threshold, y_pred.dtype) # 閾値未満で0、以上で1に変換\n  # 2倍して-1.0することで、0／1を-1.0／1.0にスケール変換して正解率を計算\n  return tf.equal(y_true, y_pred * 2 - 1.0) # 正解かどうかのデータ（平均はしていない）\n\n# # TensorFlow低水準APIではなく、Keras backend APIを使ってもOK\n# import keras.ops as K\n# # 上記のインポートを行ったうえで、以下の内容で上記のコードを書き換えるだけ\n# 「tf.cast」 → 「K.cast」\n# 「tf.equal」 → 「K.equal」\n\n# カスタムの評価関数クラスを実装（サブクラス化）\n# （tf.keras.metrics.BinaryAccuracy()の代わり）\nclass CustomAccuracy(tf.keras.metrics.Mean):\n  def __init__(self, name='custom_accuracy', dtype=None):\n    super(CustomAccuracy, self).__init__(name, dtype)\n\n  # 正解率の状態を更新する際に呼び出される関数をカスタマイズ\n  def update_state(self, y_true, y_pred, sample_weight=None):\n    matches = custom_matches(y_true, y_pred)\n    return super(CustomAccuracy, self).update_state(\n        matches, sample_weight=sample_weight) # ※平均は内部で自動的に取ってくれる",
+      "reason": "Public Keras 3 API, current array inputs, or Windows portability"
+    },
+    "147": {
+      "source": "import keras.ops as K\n\n# 1回分の訓練（学習）の処理\n@tf.function\ndef train_step(train_X, train_y):\n  training = True\n  with tf.GradientTape() as tape:\n    pred_y = model(train_X, training=training)\n    loss = criterion(pred_y, train_y)\n  gradient = tape.gradient(loss, model.trainable_weights)\n  optimizer.apply_gradients(zip(gradient, model.trainable_weights))\n  train_loss(loss)\n  train_accuracy(train_y, pred_y)\n\n# 1回分の精度検証（評価）の処理\n@tf.function\ndef valid_step(valid_X, valid_y):\n  training = False\n  pred_y = model(valid_X, training=training)\n  loss = criterion(pred_y, valid_y)\n  valid_loss(loss)\n  valid_accuracy(valid_y, pred_y)\n\n# エポック数分、訓練（学習）と精度検証（評価）を実行\nEPOCHS = 100\ntrain_history = []\nvalid_history = []\nfor epoch in range(EPOCHS):\n  train_loss.reset_state()\n  train_accuracy.reset_state()\n  valid_loss.reset_state()\n  valid_accuracy.reset_state()\n  for train_X, train_y in train_dataset:\n    train_step(train_X, train_y)\n  for valid_X, valid_y in valid_dataset:\n    valid_step(valid_X, valid_y)   \n  n = epoch + 1\n  avg_loss = train_loss.result()\n  avg_acc = train_accuracy.result()\n  avg_val_loss = valid_loss.result()\n  avg_val_acc = valid_accuracy.result()\n  train_history.append(avg_loss)\n  valid_history.append(avg_val_loss)\n  print(f'[Epoch {n:3d}/{EPOCHS:3d}]' \\\n        f' loss: {avg_loss:.5f}, acc: {avg_acc:.5f}' \\\n        f' val_loss: {avg_val_loss:.5f}, val_acc: {avg_val_acc:.5f}')\nprint('Finished Training')\nprint(model.get_weights())",
+      "reason": "Public Keras 3 API, current array inputs, or Windows portability"
+    },
+    "137": {
+      "reason": "Keras 3 optimizer extension uses update_step instead of private resource methods",
+      "source": "class CustomOptimizer(tf.keras.optimizers.Optimizer):\n  def __init__(self, learning_rate=0.01, name='CustomOptimizer', **kwargs):\n    super().__init__(learning_rate=learning_rate, name=name, **kwargs)\n\n  def update_step(self, gradient, variable, learning_rate):\n    gradient = tf.cast(gradient, variable.dtype)\n    learning_rate = tf.cast(learning_rate, variable.dtype)\n    self.assign_sub(variable, learning_rate * gradient)\n"
+    },
+    "158": {
+      "reason": "Feature columns are replaced with ordered numeric columns for Keras",
+      "source": "# Current counterpart of the historical feature-column example.\nfeature_names = list(train_X.columns)\nfeature_names\n"
+    },
+    "161": {
+      "reason": "tf.estimator is removed; explicit Keras regression counterpart retains the hidden topology",
+      "source": "# tf.estimator.DNNRegressor is unavailable in current TensorFlow.\n# This is its Keras counterpart, not a compatibility wrapper for Estimator.\nmodel = tf.keras.Sequential([\n    tf.keras.Input(shape=(len(feature_names),)),\n    layers.Dense(LAYER1_NEURONS, activation='tanh'),\n    layers.Dense(LAYER2_NEURONS, activation='tanh'),\n    layers.Dense(OUTPUT_RESULTS, activation='tanh'),\n    layers.Dense(1),\n])\nmodel.compile(optimizer=tf.keras.optimizers.SGD(learning_rate=0.03), loss='mean_squared_error')\n"
+    },
+    "164": {
+      "reason": "Replace Estimator input_fn and train/evaluate with tf.data and Keras; retain 1600 training steps",
+      "source": "train_values = train_X[feature_names].to_numpy(dtype='float32')\nvalid_values = valid_X[feature_names].to_numpy(dtype='float32')\ntrain_labels = np.asarray(train_y, dtype='float32')\nvalid_labels = np.asarray(valid_y, dtype='float32')\ntrain_input = tf.data.Dataset.from_tensor_slices((train_values, train_labels)).shuffle(250, seed=42).repeat().batch(15)\nmodel.fit(train_input, steps_per_epoch=int(250/15), epochs=100, verbose=0)\nmodel.evaluate(valid_values, valid_labels, batch_size=15)\n"
+    },
+    "167": {
+      "reason": "Replace Estimator prediction input_fn with an ordered numeric array",
+      "source": "model.predict(np.array([[0.1, -0.2]], dtype='float32'))"
+    }
+  },
+  "tf2_keras_regression": {
+    "62": {
+      "source": "# 推論（予測）する\nmodel.predict(np.array([[0.0, -3.0]], dtype='float32'))\n# array([[0.2751151]], dtype=float32) ……などと出力される",
+      "reason": "Keras 3 prediction accepts a numeric ndarray"
+    }
+  }
+}

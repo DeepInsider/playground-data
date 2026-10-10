@@ -65,15 +65,15 @@ let canvas = container
         .style("top", padding + "px")
         .style("left", padding + "px");
 
-let getCords = function (_this) {
-    var coords =d3.mouse(_this);
+let getCords = function (event, _this) {
+    var coords =d3.pointer(event, _this);
     var x = xScaleReverse(coords[0] - padding);
     var y = yScaleReverse(coords[1] - padding);
     return [x, y];
 }
 
-let onCoordsMouseMove = function (d, i) {
-    var coords =getCords(this);
+let onCoordsMouseMove = function (event, d) {
+    var coords =getCords(event, this);
     var gCoords = svg.select("g.coords");
     gCoords.selectAll("text").remove();
     gCoords.append("text")
@@ -83,13 +83,13 @@ let onCoordsMouseMove = function (d, i) {
         .text("(" + coords[0].toFixed(DECIMAL_PLACE_LIB) + ", " + coords[1].toFixed(DECIMAL_PLACE_LIB) +")");
 }
 
-let onCoordsMouseLeave = function (d, i) {
+let onCoordsMouseLeave = function (event, d) {
     var gCoords = svg.select("g.coords");
     gCoords.selectAll("text").remove();
 }
 
-let onCoordsClick = function (d, i) {
-    var coords =getCords(this);
+let onCoordsClick = function (event, d) {
+    var coords =getCords(event, this);
     if (onCoordsClickCallback) onCoordsClickCallback(coords);
 }
 
@@ -223,7 +223,7 @@ let updateTableHead = function (isClassificaion) {
 
     thead.selectAll('tr').remove();
     var tr = thead.selectAll('tr').data(names);
-    var th = tr.enter().append("tr").selectAll('th').data(function(row) { return d3.entries(row); });
+    var th = tr.enter().append("tr").selectAll('th').data(function(row) { return Object.entries(row).map(([key, value]) => ({key, value})); });
     tr.exit().remove();
 
     th.enter().append("th").text(function (name) { return name.value; });
@@ -237,7 +237,7 @@ let updateDataTable = function (dataset, isClassificaion) {
 
     tbody.selectAll("tr").remove();
     var tr = tbody.selectAll("tr").data(dataset);
-    var td = tr.enter().append("tr").selectAll("td").data(function(row) { return d3.entries(row); });
+    var td = tr.enter().append("tr").selectAll("td").data(function(row) { return Object.entries(row).map(([key, value]) => ({key, value})); });
     tr.exit().remove();
 
     td.enter().append("td").text(function(d) { return d.key == 'label' ? (isClassificaion ? d.value : '') : d.value.toFixed(DECIMAL_PLACE); });

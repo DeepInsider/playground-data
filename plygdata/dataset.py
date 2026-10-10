@@ -63,7 +63,7 @@ def normal_random(mean = 0.0, variance = 1.0):
         v1 = 2.0 * random.random() - 1.0
         v2 = 2.0 * random.random() - 1.0
         s = v1 * v1 + v2 * v2
-        if s <= 1.0:
+        if 0.0 < s <= 1.0:
             break
     result = math.sqrt(-2.0 * math.log(s) / s) * v1
     return mean + math.sqrt(variance) * result
