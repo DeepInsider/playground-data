@@ -1,224 +1,86 @@
-// ==============================================================================
-// Copyright 2018-2019 Digital Advantage Co., Ltd. All Rights Reserved.
-//
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-//     http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
-// ==============================================================================
-
+// Copyright 2018-2026 Digital Advantage Co., Ltd. Licensed under Apache-2.0.
 "use strict";
-
 const MODEL_FILE_NAME = './models/dnn-classify_two_gauss/model.json';
-let isClassificaion = true;                             // 分類の場合は true 、回帰の場合は false 。
-let discretizeBoundaryColor = false;             // 決定協会の色を離散化する（＝1か-1にする）かどうか
-let discretizePointsColor = isClassificaion;     // 点の色を離散化する（＝1か-1にする）かどうか
-
-const NUM_TEST_DATA = 10; // テストデータの数
-const DECIMAL_PLACE = 2; // 小数点の桁数
-
-let savedModel;  // 学習済みモデルを保存するための変数
-
-
-/*
-【注意】tf.tidy もしくは tf.dipose について
-TensorFlow.jsのテンソル（tf.Tensor ）オブジェクトはGPUメモリを確保します。
-メモリリークを防ぐために、tf.Tensorを生成して計算終了後に、dispose する必要があります。
-
-個々のテンソルオブジェクトを dispose するのが面倒な場合は、tf.tidy({ ... }) の中でテンソルの生成と計算（ops）を行ってください。
-tf.tidy のスコープ内の処理は、dispose を呼び出す必要がありません。
-機械学習モデルのライフサイクル全体の最後に、テンソルオブジェクトが削除されます。明示的に早く削除したい場合は、dipsose を呼んでください。
-*/
-
-let getTensor2dData = function (arrayData) {
-
-  var tensorData = tf.tidy(() => {
-    return tf.tensor2d(arrayData);
-  });
-  //tensorData.print();
-
-  return tensorData;
+const DECIMAL_PLACE = 2;
+let savedModel;
+let cachedBoundary;
+let ready = false;
+const statusElement = document.getElementById('model-status');
+const controls = document.querySelectorAll('#generate-test-data, #coordinate-form input, #coordinate-form button, #discrete-boundary');
+const retryButton = document.getElementById('retry-model');
+let statusMessage = 'モデルを読み込んでいます…';
+let statusValues = {};
+function setStatus(message, failed = false, values = {}) {
+  statusMessage = message;
+  statusValues = values;
+  statusElement.textContent = translate(message, values);
+  statusElement.classList.toggle('error', failed);
 }
-
-
-let generateTestData = function (numSamples) {
-  console.log('テストデータの生成:');
-
-  var arrayPoints = generateTestPoints(numSamples);
-
-  var tensorPoints = getTensor2dData(arrayPoints);
-
-  return tensorPoints;
+function setReady(value) {
+  ready = value;
+  controls.forEach(control => { control.disabled = !value; });
+  statusElement.setAttribute('aria-busy', String(!value && retryButton.hidden));
 }
-
-let loadLearnedModel = async function (filepath) {
-  console.log('学習済みモデルの読み込み：');
-
+function updateUI(points) {
+  if (!ready) return;
   try {
-    showSpinner()
-
-    var loadedModel = await tf.loadLayersModel(filepath);
-
-    loadedModel.summary();
-
-    return loadedModel;
-
-  } catch (err) {
-    console.error(err);
-
-  } finally {
-    hideSpinner()
+    const rows = tf.tidy(() => {
+      const predictions = savedModel.predict(tf.tensor2d(points)).dataSync();
+      return points.map(([x, y], index) => ({x, y, label: predictions[index] >= 0 ? 1 : -1, pred: predictions[index]}));
+    });
+    updateTableHead(true);
+    updateDataTable(rows, true);
+    updatePoints(rows, true);
+    setStatus('{count}点の予測を表示しています。', false, {count: rows.length});
+  } catch (error) {
+    setStatus('予測できませんでした。もう一度読み込んでください。', true);
+    retryButton.hidden = false;
+    setReady(false);
   }
 }
-
-let drawDecisionBoundary = async function (model, discretize) {
-  console.log("学習済みモデルの決定境界を取得して、背景として描画：");
-
+async function mainInit() {
+  retryButton.hidden = true;
+  setReady(false);
+  setStatus('モデルを読み込んでいます…');
   try {
-    //console.log('start...')
-    showSpinner()
-
-    var boundary = await getDecisionBoundary(function (arrayInput) {
-      //console.log(arrayInput);
-
-      return tf.tidy(() => {
-        var tensorInput = getTensor2dData(arrayInput);
-        //tensorInput.print();
-
-        var tensorOutput = model.predict(tensorInput);
-        //tensorOutput.print();
-
-        var arrayOutput = tensorOutput.dataSync();
-        //console.log(arrayOutpuPoints);
-
-        return arrayOutput;
-      });
-    });
-
-    //console.log('finish.')
-  } catch (err) {
-    console.error(err);
-
-  } finally {
-    hideSpinner()
+    if (!window.tf || !window.d3) throw new Error('Dependencies unavailable');
+    if (savedModel) { savedModel.dispose(); savedModel = undefined; }
+    savedModel = await tf.loadLayersModel(MODEL_FILE_NAME);
+    setStatus('予測の地図を描いています…');
+    cachedBoundary = await getDecisionBoundary(points => tf.tidy(() => savedModel.predict(tf.tensor2d(points)).dataSync()));
+    updateBackground(cachedBoundary, document.getElementById('discrete-boundary').checked);
+    setReady(true);
+    updateUI(generateTestPoints(10));
+  } catch (error) {
+    if (savedModel) { savedModel.dispose(); savedModel = undefined; }
+    setStatus('モデルを読み込めませんでした。ネットワーク接続を確認して再試行してください。', true);
+    retryButton.hidden = false;
+    setReady(false);
   }
-
-  updateBackground(boundary, discretize);
 }
-
-let predictFromModel = async function (model, tensorInput) {
-  console.log('学習済みモデルで、テストデータから予測：');
-
-  // データをTensor2d型からJavaScriptのArray型に変換
-  var arrayInput = tensorInput.dataSync(); // なぜか1次元配列にしてしまう...
-  //console.log(arrayInput)
-
-  // 学習済みモデルで予測
-  var tensorOutput = model.predict(tensorInput, {
-    batchSize: 32,
-    verbose: false
-  });
-
-  // データをTensor2d型からJavaScriptのArray型に変換
-  var arrayOutput = tensorOutput.dataSync();
-  tensorOutput.dispose();
-  //console.log(arrayOutput);
-
-  // テストデータの座標点と予測結果を配列にまとめる
-  var dictArrayOutput = [];
-  for (var i = 0; i < arrayInput.length; i += 2) {
-    dictArrayOutput.push({
-      x: arrayInput[i],
-      y: arrayInput[i + 1],
-      label: (arrayOutput[i / 2] >= 0.0) ? 1 : -1,
-      pred: arrayOutput[i / 2]
-    });
-  }
-  //console.log(dictArrayOutput)
-
-  return dictArrayOutput;
+if (window.d3) {
+  onButtonClickCallback = () => updateUI(generateTestPoints(10));
+  onCoordsClickCallback = coords => {
+    if (!ready) return;
+    document.getElementById('coordinate-x').value = coords[0].toFixed(2);
+    document.getElementById('coordinate-y').value = coords[1].toFixed(2);
+    updateUI([coords]);
+  };
 }
-
-let renderTableHead = async function (enableClass) {
-  console.log("表の見出しを描画更新：");
-
-  updateTableHead(enableClass);
-}
-
-let renderDataTable = async function (dictArrayOutput, enableClass) {
-  console.log("表のデータを描画更新：");
-
-  updateDataTable(dictArrayOutput, enableClass);
-}
-
-let plotCoordinatePoints = async function (dictArrayOutput, discretize) {
-  console.log("予測結果を色付きの点としてプロット：");
-
-  updatePoints(dictArrayOutput, discretize);
-}
-
-
-// ----------------------------------------------------
-// ボタンクリック時の処理
-
-onButtonClickCallback = function() {
-
-  var tensorInput = generateTestData(NUM_TEST_DATA);
-
-  updateUI(tensorInput);
-}
-
-
-// ----------------------------------------------------
-// グラフクリック時の処理
-
-onCoordsClickCallback = function (coords) {
-
-  var tensorInput = getTensor2dData([coords]);
-
-  updateUI(tensorInput);
-}
-
-
-// ----------------------------------------------------
-// メイン処理
-
-let updateUI = async function (tensorInput) {
-
-  predictFromModel(savedModel, tensorInput).then(dictArrayOutput => {
-
-    renderTableHead(isClassificaion);
-
-    renderDataTable(dictArrayOutput, isClassificaion);
-
-    plotCoordinatePoints(dictArrayOutput, discretizePointsColor);
-
-  }).finally(() => tensorInput.dispose());
-
-}
-
-let mainInit = async function () {
-
-  var tensorInput = generateTestData(NUM_TEST_DATA);
-
-  loadLearnedModel(MODEL_FILE_NAME).then(model => {
-
-    savedModel = model;
-
-    drawDecisionBoundary(model, discretizeBoundaryColor).then(() => {
-
-      updateUI(tensorInput);
-
-    });
-  });
-
-}
-
+document.getElementById('coordinate-form').addEventListener('submit', event => {
+  event.preventDefault();
+  const points = ['coordinate-x', 'coordinate-y'].map(id => Number(document.getElementById(id).value));
+  if (points.every(value => Number.isFinite(value) && value >= -6 && value <= 6)) updateUI([points]);
+});
+document.getElementById('discrete-boundary').addEventListener('change', event => {
+  if (ready) updateBackground(cachedBoundary, event.target.checked);
+});
+retryButton.addEventListener('click', () => {
+  if (!window.tf || !window.d3) window.location.reload();
+  else mainInit();
+});
+document.addEventListener('languagechange', () => {
+  statusElement.textContent = translate(statusMessage, statusValues);
+  if (window.d3) updateTableHead(true);
+});
 mainInit();

@@ -23,10 +23,10 @@ const DENSITY = 100;
 const MAX_DOMAIN = 6;
 const DECIMAL_PLACE_LIB = 2; // 小数点の桁数
 
-const width = 300;
+const width = 480;
 const height = width;
 const numSamples = DENSITY;
-const padding = 20;
+const padding = 28;
 
 const xDomain = [-MAX_DOMAIN, MAX_DOMAIN];
 const yDomain = [-MAX_DOMAIN, MAX_DOMAIN];
@@ -49,21 +49,20 @@ let labelScaleDiscretizedColor = d3.scaleQuantize().domain([-1, 1]).range(colors
 
 let container = d3.select("#heatmap")
     .append("div")
-        .style("width", width + "px")
-        .style("height", height + "px")
+        .style("width", "100%")
+        .style("aspect-ratio", "1")
         .style("position", "relative")
-        .style("top", -padding + "px")
-        .style("left", -padding + "px");
+;
 
 let canvas = container
     .append("canvas")
         .attr("width", numSamples)
         .attr("height", numSamples)
-        .style("width", (width - 2 * padding) + "px")
-        .style("height", (height - 2 * padding) + "px")
+        .style("width", (100 * (width - 2 * padding) / width) + "%")
+        .style("height", (100 * (height - 2 * padding) / height) + "%")
         .style("position", "absolute")
-        .style("top", padding + "px")
-        .style("left", padding + "px");
+        .style("top", (100 * padding / width) + "%")
+        .style("left", (100 * padding / width) + "%");
 
 let getCords = function (event, _this) {
     var coords =d3.pointer(event, _this);
@@ -79,7 +78,7 @@ let onCoordsMouseMove = function (event, d) {
     gCoords.append("text")
         .attr("x", 0)
         .attr("y", -4)
-        .style("font-size", "12px")
+        .style("font-size", "18px")
         .text("(" + coords[0].toFixed(DECIMAL_PLACE_LIB) + ", " + coords[1].toFixed(DECIMAL_PLACE_LIB) +")");
 }
 
@@ -90,13 +89,14 @@ let onCoordsMouseLeave = function (event, d) {
 
 let onCoordsClick = function (event, d) {
     var coords =getCords(event, this);
-    if (onCoordsClickCallback) onCoordsClickCallback(coords);
+    if (coords.every(value => value >= -MAX_DOMAIN && value <= MAX_DOMAIN) && onCoordsClickCallback) onCoordsClickCallback(coords);
 }
 
 let svg = container
     .append("svg")
-        .attr("width", width)
-        .attr("height", height)
+        .attr("viewBox", "0 0 " + width + " " + height)
+        .attr("width", "100%")
+        .attr("height", "100%")
         .style("position", "absolute")
         .style("top", "0")
         .style("left", "0")
@@ -122,23 +122,6 @@ svg
         .attr("class", "y axis")
         .attr("transform", "translate(" + (width - 2 * padding) + ",0)")
             .call(yAxis);
-
-let xScaleColorBar = d3.scaleLinear().domain([-1, 1]).range([0, 254]);
-let xAxisColorBar = d3.axisBottom().scale(xScaleColorBar).tickValues([-1, 0, 1]).tickFormat(d3.format("d"));
-d3.select("#color-map g.core")
-    .append("g")
-        .attr("class", "x axis")
-        .attr("transform", "translate(0,10)")
-            .call(xAxisColorBar);
-
-
-let showSpinner = function () {
-    d3.select(".mdl-spinner").classed("is-active", true)
-}
-
-let hideSpinner = function () {
-    d3.select(".mdl-spinner").classed("is-active", false)
-}
 
 let getDecisionBoundary = async function (callback) {
     var boundary = new Array(DENSITY);
@@ -199,7 +182,7 @@ let updateCircles = function (container, points, discretize) {
 
     selection.enter()
         .append('circle')
-            .attr("r", 3)
+            .attr("r", 4.5)
             .attr('cx', function (d) { return xScalePoint(d.x) })
             .attr('cy', function (d) { return yScalePoint(d.y) })
             .attr('fill', function (d) { return discretize ? labelScaleDiscretizedColor(d.label) : labelScaleColor(d.label) })
@@ -214,7 +197,7 @@ let updatePoints = function (points, discretize) {
 let updateTableHead = function (isClassificaion) {
     var names = [];
     names.push(isClassificaion
-        ? {x: "X座標", y: "Y座標", label: "分類", pred: "予測" }
+        ? {x: "X座標", y: "Y座標", label: "予測分類", pred: "出力値" }
         : {x: "X座標", y: "Y座標", label: "回帰", pred: "予測" }
     );
     //console.log(names);
@@ -226,7 +209,7 @@ let updateTableHead = function (isClassificaion) {
     var th = tr.enter().append("tr").selectAll('th').data(function(row) { return Object.entries(row).map(([key, value]) => ({key, value})); });
     tr.exit().remove();
 
-    th.enter().append("th").text(function (name) { return name.value; });
+    th.enter().append("th").attr("scope", "col").text(function (name) { return translate(name.value); });
     th.exit().remove();
 };
 

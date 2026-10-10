@@ -155,7 +155,11 @@ See [development and release instructions](docs/development.md) and
 Sample Web app
 -------------------------------------------------------------------
 
-- [Sample Web app of Neural Network Playground-DATA using TensorFlow.js](https://deepinsider.github.io/playground-data/)
+- [Interactive prediction demo (English / 日本語)](https://deepinsider.github.io/playground-data/)
+
+Explore the pretrained DNN by clicking the plot or entering X/Y coordinates.
+The demo supports mobile screens, language switching, and continuous or two-color
+boundaries. See [demo implementation and verification](docs/web-demo.md).
 
 License
 -------------------------------------------------------------------

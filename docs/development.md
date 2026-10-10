@@ -46,6 +46,8 @@ Preparation does not publish. Do not upload historical files already in `dist/`.
 Serve `docs/` over HTTP, for example:
 `uv run python -m http.server 8000 --directory docs`.
 The demo pins TensorFlow.js 4.22.0 and D3 7.9.0.
+The demo supports English/Japanese switching and responsive layouts. See
+[demo implementation and browser checks](web-demo.md). Run `node scripts/verify_web.cjs`.
 Verify model loading, decision boundary, generated points, graph clicks,
 and repeated predictions for tensor leaks. Model weights are unchanged;
 legacy optimizer metadata is omitted for inference.

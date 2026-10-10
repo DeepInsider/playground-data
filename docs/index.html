@@ -1,163 +1,33 @@
-<!DOCTYPE html>
-<html>
+<!doctype html>
+<html lang="ja">
 <head>
-	<link rel="icon" type="image/png" href="favicon.png">
-	<meta charset="utf-8" />
-	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<meta name="keywords" content="neural networks,machine learning,tensorflow.js">
-
-	<meta property="og:type" content="article"/>
-	<meta property="og:title" content="ニューラルネットワーク Playground-DATA の サンプル Web アプリ（TensorFlow.js 活用）"/>
-	<meta property="og:description" content="学習済みモデルをTensorFlow.jsで動かそう！">
-	<meta property="og:url" content="https://deepinsider.github.io/playground-data/"/>
-	<meta property="og:image" content="https://deepinsider.github.io/playground-data/preview.png"/>
-
-	<meta name="twitter:card" value="summary_large_image">
-	<meta name="twitter:title" content="ニューラルネットワーク Playground-DATA の サンプル Web アプリ（TensorFlow.js 活用）">
-	<meta name="twitter:description" content="学習済みモデルをTensorFlow.jsで動かそう！">
-	<meta name="twitter:url" content="https://deepinsider.github.io/playground-data/">
-	<meta name="twitter:image" content="https://deepinsider.github.io/playground-data/preview.png">
-	<meta name="twitter:image:width" content="670">
-	<meta name="twitter:image:height" content="600">
-
-	<title>ニューラルネットワーク Playground-DATA の サンプル Web アプリ（TensorFlow.js 活用）</title>
-
-	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700" type="text/css">
-	<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/material-design-lite@1.3.0/material.indigo-blue.min.css">
-	<script defer src="https://cdn.jsdelivr.net/npm/material-design-lite@1.3.0/material.min.js"></script>
-
-	<link rel="stylesheet" href="bundle.css">
-
-<!-- Global site tag (gtag.js) - Google Analytics -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=UA-115872911-2"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'UA-115872911-2');
-</script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="学習済みニューラルネットワークで座標を分類。点を置いて決定境界と予測を試せるPlayground-DATAデモ。">
+<meta property="og:title" content="Playground-DATA | 座標で試すニューラルネットワーク">
+<meta property="og:description" content="グラフに点を置いて、学習済み予測を見てみよう。">
+<meta property="og:url" content="https://deepinsider.github.io/playground-data/">
+<meta property="og:image" content="https://deepinsider.github.io/playground-data/preview.png">
+<title>Playground-DATA | 座標で試すニューラルネットワーク</title>
+<link rel="icon" href="favicon.png">
+<link rel="stylesheet" href="bundle.css">
 </head>
 <body>
-
-<!-- GitHub link -->
-<a class="github-link" href="https://github.com/DeepInsider/playground-data/tree/master/docs" title="Source on GitHub">
-	<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 60.5 60.5" width="60" height="60">
-		<polygon class="bg" points="60.5,60.5 0,0 60.5,0 "></polygon>
-		<path class="icon" d="M43.1,5.8c-6.6,0-12,5.4-12,12c0,5.3,3.4,9.8,8.2,11.4c0.6,0.1,0.8-0.3,0.8-0.6c0-0.3,0-1,0-2c-3.3,0.7-4-1.6-4-1.6c-0.5-1.4-1.3-1.8-1.3-1.8c-1.1-0.7,0.1-0.7,0.1-0.7c1.2,0.1,1.8,1.2,1.8,1.2c1.1,1.8,2.8,1.3,3.5,1c0.1-0.8,0.4-1.3,0.8-1.6c-2.7-0.3-5.5-1.3-5.5-5.9c0-1.3,0.5-2.4,1.2-3.2c-0.1-0.3-0.5-1.5,0.1-3.2c0,0,1-0.3,3.3,1.2c1-0.3,2-0.4,3-0.4c1,0,2,0.1,3,0.4c2.3-1.6,3.3-1.2,3.3-1.2c0.7,1.7,0.2,2.9,0.1,3.2c0.8,0.8,1.2,1.9,1.2,3.2c0,4.6-2.8,5.6-5.5,5.9c0.4,0.4,0.8,1.1,0.8,2.2c0,1.6,0,2.9,0,3.3c0,0.3,0.2,0.7,0.8,0.6c4.8-1.6,8.2-6.1,8.2-11.4C55.1,11.2,49.7,5.8,43.1,5.8z"></path>
-	</svg>
-</a>
-<!-- Header -->
-
-<div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
-
-<header class="mdl-layout__header">
-	<div class="mdl-layout__header-row">
-			<i class="material-icons">web</i>
-		<h1 class="mdl-layout-title">ニューラルネットワーク Playground-DATA の サンプル Web アプリ（TensorFlow.js 活用）</h1>
-	</div>
-
-
-<div class="mdl-layout__tab-bar mdl-color--primary-dark">
-	<a href="#dnn-sample" class="mdl-layout__tab is-active">DNNサンプル（1学期用）</a>
-	<a href="#cnn-sample" class="mdl-layout__tab">CNNサンプル（2学期用）</a>
+<header class="site-header"><a class="brand" href="./">Deep Insider <span>Playground-DATA</span></a><div class="header-actions"><div class="language-switch" role="group" aria-label="Language / 言語"><button type="button" data-language="en" lang="en">English</button><button type="button" data-language="ja" lang="ja">日本語</button></div><a href="https://github.com/DeepInsider/playground-data">GitHub ↗</a></div></header>
+<main>
+<section class="intro"><p class="eyebrow">NEURAL NETWORK DEMO</p><h1>点を置いて、<br>予測を見てみよう。</h1><p>2つのガウス分布で学習したニューラルネットワークが、座標をオレンジ（−1）か青（+1）に分類します。グラフをクリック・タップして試してください。</p></section>
+<div class="demo-grid">
+<section class="panel graph-panel" aria-labelledby="graph-title"><div class="panel-heading"><h2 id="graph-title">予測の地図</h2><span class="badge">学習済み DNN</span></div><p class="hint" id="graph-help">横軸はX、縦軸はY。背景の色は各座標でのモデルの出力です。</p><div id="heatmap" aria-describedby="graph-help"></div><div class="legend"><span>−1 オレンジ</span><span>+1 青</span></div><div class="legend-gradient"></div><p class="hint legend-note">白に近いほど出力が0に近く、分類の境界にあります。</p><label class="toggle"><input type="checkbox" id="discrete-boundary" disabled>背景を2色で表示する</label></section>
+<section class="panel results-panel" aria-labelledby="results-title"><h2 id="results-title">座標を試す</h2><div class="status" id="model-status" role="status" aria-live="polite" aria-busy="true">モデルを読み込んでいます…</div><button id="retry-model" class="secondary" hidden>もう一度読み込む</button><button class="primary" id="generate-test-data" disabled>ランダムな10点を予測</button><p class="input-heading">または座標を入力</p><form id="coordinate-form"><div class="coordinate-fields"><label>X<input id="coordinate-x" name="x" type="number" min="-6" max="6" step="any" value="0" required disabled></label><label>Y<input id="coordinate-y" name="y" type="number" min="-6" max="6" step="any" value="0" required disabled></label><button type="submit" class="secondary" disabled>予測する</button></div></form><p class="hint">入力範囲：−6〜6。操作するたびに点を置き換えます。</p><div class="table-wrap"><table><caption>現在の点の予測結果</caption><thead id="data-table-head"><tr><th scope="col">X座標</th><th scope="col">Y座標</th><th scope="col">予測分類</th><th scope="col">出力値</th></tr></thead><tbody id="data-table-body"></tbody></table></div><p class="hint">出力値が0以上なら+1、0未満なら−1。出力値は確率ではありません。</p></section>
 </div>
-
-</header>
-
-<main class="mdl-layout__content">
-
-<div class="mdl-layout__tab-panel is-active" id="dnn-sample">
-
-	<div class="mdl-grid">
-
-		<div class="mdl-cell mdl-cell--6-col">
-			<div class="mdl-cell mdl-cell--12-col cell-align-right">
-				<button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect" id="generate-test-data">10個の点を自動生成してテスト</button>
-			</div>
-
-			<table class="mdl-data-table">
-				<thead id="data-table-head">
-					<tr>
-						<th>X座標</th><th>Y座標</th><th>分類</th><th>予測</th>
-					</tr>
-				</thead>
-				<tbody id="data-table-body">
-					<tr>
-						<td>-0.000</td><td>-0.000</td><td>0</td><td>-0.000</td>
-					</tr>
-				</tbody>
-			</table>
-
-			<div class="mdl-cell mdl-cell--12-col cell-align-right">
-				<div class="mdl-spinner mdl-js-spinner is-active"></div>
-			</div>
-		</div>
-
-		<div class="mdl-cell mdl-cell--6-col">
-			<div class="mdl-cell mdl-cell--12-col">
-				<p>ボタンをクリックするか、<br>グラフ上の任意の場所をクリックしてください。</p>
-			</div>
-
-			<div id="heatmap"></div>
-
-			<div class="colorbar">
-
-				<p class="colorbar-header">
-					色でデータの値を表現しています。
-				</p>
-
-				<!-- グラデーション カラー スケール -->
-				<svg width="260" height="30" id="color-map">
-					<defs>
-						<linearGradient id="gradient" x1="0%" y1="100%" x2="100%" y2="100%">
-						<stop offset="0%" stop-color="#f59322" stop-opacity="1"></stop>
-						<stop offset="50%" stop-color="#e8eaeb" stop-opacity="1"></stop>
-						<stop offset="100%" stop-color="#0877bd" stop-opacity="1"></stop>
-						</linearGradient>
-					</defs>
-					<g class="core" transform="translate(3, 0)">
-						<rect width="254" height="10" style="fill: url('#gradient');"></rect>
-					</g>
-				</svg>
-
-				<p class="colorbar-footer">
-					<b>分類：</b><span style="color: #f59322"> -1（オレンジ色）</span>か、<span style="color: #0877bd">1（青色）</span><br>
-					<b>回帰：</b> <span style="color: #f59322">-1.0</span> ～ <span style="color: #0877bd">1.0</span> の数値
-				</p>
-
-			</div>
-		</div>
-
-	</div>
-
-
-</div>
-
-<div class="mdl-layout__tab-panel" id="cnn-sample">
-	<div class="mdl-cell mdl-cell--12-col">
-		<p style="text-align: center">準備中です。</p>
-	</div>
-</div>
-
+<section class="about"><h2>このデモについて</h2><p>入力はX・Yの2値、隠れ層は各5ユニットの2層、出力は1値（tanh）。Pythonで学習したモデルをブラウザー内で動かしています。ここでは追加学習は行いません。</p><p><a href="https://pypi.org/project/playground-data/">Pythonパッケージを使う ↗</a><a href="https://github.com/DeepInsider/playground-data/tree/master/notebooks">記事ノートブックを見る ↗</a></p></section>
+<noscript><p class="status error">このデモを使うにはJavaScriptを有効にしてください。</p></noscript>
 </main>
-
-<footer>
-	<div class="footer-body">
-		<div class="footer-logo">Deep Insider</div>
-		<div class="footer-links"><a href="https://github.com/DeepInsider/playground-data/tree/master/docs">Source on GitHub</a> ( Apache License 2.0 )</div>
-	</div>
-</footer>
-
-</div>
-
+<footer><span>Deep Insider</span><span><a href="https://github.com/DeepInsider/playground-data/tree/master/docs">ソースコード</a> · Apache License 2.0</span></footer>
 <script src="https://cdn.jsdelivr.net/npm/d3@7.9.0/dist/d3.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@4.22.0"></script><!-- /tfjs@latest とする方がよいが、バージョンで挙動が変わるのを回避するため固定。 -->
+<script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@4.22.0/dist/tf.min.js"></script>
+<script src="i18n.js"></script>
 <script src="bundle.js"></script>
 <script src="main.js"></script>
 </body>
 </html>
-
-
